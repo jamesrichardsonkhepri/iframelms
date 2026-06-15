@@ -28,28 +28,41 @@
     }
 
     *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      padding:0;
-      min-height:100%;
-      background:#fff;
-      font-family:Lato, Arial, sans-serif;
-      color:var(--text);
-      overflow-x:hidden;
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  font-family: Lato, Arial, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-    body{
-      min-height:100vh;
-    }
+body {
+  margin: 0;
+}
 
-    .shell{
-      width:100%;
-      min-height:100vh;
-      padding:36px 24px 56px 24px;
-      display:flex;
-      justify-content:center;
-      background:#ffffff;
-    }
+.shell{
+  width:100%;
+  padding:24px;
+  display:flex;
+  justify-content:center;
+  background:#ffffff;
+}
+
+.frame{
+  width:min(1320px,100%);
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.hero{
+  min-height:460px;
+}
+
+.hero-content{
+  min-height:460px;
+}
 
     .frame{
       width:min(1320px,100%);
