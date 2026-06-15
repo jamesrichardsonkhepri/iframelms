@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass Menu Demo</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111111;
+      --muted:#8b8b8b;
+      --glass-1:rgba(238,238,238,0.82);
+      --glass-2:rgba(226,226,226,0.56);
+      --glass-border:rgba(255,255,255,0.78);
+      --pill:#FDE2CB;
+      --hero-radius:34px;
+      --menu-radius:34px;
+      --hero-shadow:0 14px 38px rgba(0,0,0,0.045);
+      --menu-shadow:
+        0 36px 90px rgba(0,0,0,0.18),
+        0 12px 30px rgba(0,0,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.92);
+      --ease:cubic-bezier(.22,.7,.1,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      background:#fff;
+      font-family:Lato, Arial, sans-serif;
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    body{
+      min-height:100vh;
+    }
+
+    .shell{
+      width:100%;
+      min-height:100vh;
+      padding:36px 24px 56px 24px;
+      display:flex;
+      justify-content:center;
+      background:#ffffff;
+    }
+
+    .frame{
+      width:min(1320px,100%);
+      min-height:calc(100vh - 92px);
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    /* HERO */
+    .hero{
+      position:relative;
+      width:100%;
+      min-height:560px;
+      border-radius:var(--hero-radius);
+      overflow:hidden;
+      background:#ffffff;
+      border:1px solid rgba(242,242,242,1);
+      box-shadow:var(--hero-shadow);
+      isolation:isolate;
+      cursor:pointer;
+    }
+
+    .hero-surface{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 520ms var(--ease);
+      background-size:180% 180%;
+      animation:powderFlow 10s ease-in-out infinite;
+      will-change:opacity, background-position;
+    }
+
+    .hero-surface.active{
+      opacity:1;
+    }
+
+    .hero-home{
+      background:#ffffff;
+      animation:none;
+      opacity:1;
+    }
+
+    .hero-learning{
+      background:
+        radial-gradient(circle at 17% 22%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 20%),
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 24%),
+        radial-gradient(circle at 64% 78%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 27%),
+        linear-gradient(132deg, #fafafa 0%, #ececec 20%, #d8ccc4 42%, #f2e8e2 62%, #efefef 100%);
+    }
+
+    .hero-resources{
+      background:
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.68) 0%, rgba(255,255,255,0) 20%),
+        radial-gradient(circle at 84% 24%, rgba(225,236,245,0.46) 0%, rgba(225,236,245,0) 24%),
+        radial-gradient(circle at 60% 76%, rgba(206,218,229,0.34) 0%, rgba(206,218,229,0) 28%),
+        linear-gradient(132deg, #f8fbfd 0%, #dfe9f0 18%, #bfd0de 42%, #e8eff4 66%, #fbfdfe 100%);
+    }
+
+    .hero-compliance{
+      background:
+        radial-gradient(circle at 16% 22%, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0) 20%),
+        radial-gradient(circle at 84% 18%, rgba(244,233,255,0.40) 0%, rgba(244,233,255,0) 24%),
+        radial-gradient(circle at 64% 80%, rgba(213,185,255,0.34) 0%, rgba(213,185,255,0) 28%),
+        linear-gradient(130deg, #fcfbff 0%, #ebdefe 18%, #cfb3ff 40%, #b984ff 56%, #e7dcff 72%, #ffffff 100%);
+    }
+
+    .hero-settings{
+      background:
+        radial-gradient(circle at 14% 20%, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0) 20%),
+        radial-gradient(circle at 84% 22%, rgba(232,232,232,0.44) 0%, rgba(232,232,232,0) 24%),
+        radial-gradient(circle at 60% 76%, rgba(214,214,214,0.28) 0%, rgba(214,214,214,0) 28%),
+        linear-gradient(132deg, #f9f9f9 0%, #e3e3e3 18%, #cfcfcf 42%, #efefef 66%, #ffffff 100%);
+    }
+
+    .hero-gloss{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity 400ms ease;
+      background:
+        linear-gradient(120deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0.08) 16%,
+          rgba(255,255,255,0.28) 30%,
+          rgba(255,255,255,0.08) 44%,
+          rgba(255,255,255,0) 58%);
+      background-size:220% 220%;
+      animation:surfaceSweep 6s linear infinite;
+      mix-blend-mode:screen;
+    }
+
+    .hero.has-colour .hero-gloss{
+      opacity:1;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:3;
+      min-height:560px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:52px;
+      text-align:center;
+    }
+
+    .text-stage{
+      position:relative;
+      min-height:140px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:min(900px, 100%);
+    }
+
+    .text-layer{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:10px;
+      opacity:0;
+      transform:translateX(0);
+      transition:
+        opacity 380ms var(--ease),
+        transform 380ms var(--ease);
+      pointer-events:none;
+    }
+
+    .text-layer.active{
+      opacity:1;
+      transform:translateX(0);
+    }
+
+    .text-layer.exit-left{
+      opacity:0;
+      transform:translateX(-26px);
+    }
+
+    .text-layer.exit-right{
+      opacity:0;
+      transform:translateX(26px);
+    }
+
+    .text-layer.enter-left{
+      opacity:0;
+      transform:translateX(-26px);
+    }
+
+    .text-layer.enter-right{
+      opacity:0;
+      transform:translateX(26px);
+    }
+
+    .hello-big{
+      margin:0;
+      font-size:clamp(52px, 8vw, 100px);
+      line-height:0.95;
+      letter-spacing:-0.06em;
+      font-weight:500;
+      color:#121212;
+    }
+
+    .hello-small{
+      margin:0;
+      font-size:clamp(13px, 1.35vw, 18px);
+      line-height:1.45;
+      letter-spacing:0.01em;
+      color:#868686;
+      font-weight:400;
+    }
+
+    .state-title{
+      margin:0;
+      font-size:clamp(34px, 5vw, 72px);
+      line-height:0.98;
+      letter-spacing:-0.055em;
+      font-weight:800;
+      color:#111111;
+    }
+
+    /* MENU */
+    .menu-zone{
+      width:100%;
+      margin-top:-12px;
+    }
+
+    .menu-wrap{
+      position:relative;
+      width:100%;
+      min-height:134px;
+      border-radius:var(--menu-radius);
+      overflow:hidden;
+      border:1px solid var(--glass-border);
+      background:
+        linear-gradient(135deg, var(--glass-1) 0%, var(--glass-2) 50%, rgba(243,243,243,0.74) 100%);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      box-shadow:var(--menu-shadow);
+      isolation:isolate;
+    }
+
+    .menu-wrap::before{
+      content:"";
+      position:absolute;
+      inset:-35% -15%;
+      background:
+        linear-gradient(115deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0.10) 16%,
+          rgba(255,255,255,0.30) 23%,
+          rgba(255,255,255,0.06) 32%,
+          rgba(255,255,255,0) 42%);
+      transform:translateX(-56%);
+      animation:glassSweep 10s ease-in-out infinite;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .menu{
+      position:relative;
+      z-index:2;
+      width:100%;
+      min-height:134px;
+      display:grid;
+      grid-template-columns:72px 1fr 72px;
+      align-items:center;
+      gap:12px;
+      padding:18px 18px;
+    }
+
+    .icon-btn{
+      width:64px;
+      height:64px;
+      border-radius:999px;
+      appearance:none;
+      border:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:
+        background 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease,
+        opacity 180ms ease;
+      color:#111111;
+      font-size:20px;
+    }
+
+    .icon-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .home-btn{
+      background:rgba(255,255,255,0.96);
+      border:1px solid rgba(255,255,255,0.96);
+      box-shadow:
+        0 8px 18px rgba(0,0,0,0.05),
+        inset 0 1px 0 rgba(255,255,255,1);
+    }
+
+    .settings-btn{
+      background:rgba(255,255,255,0.56);
+      border:1px solid rgba(255,255,255,0.72);
+      box-shadow:
+        0 8px 18px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.90);
+    }
+
+    .menu-items{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0;
+      flex-wrap:nowrap;
+      min-width:0;
+    }
+
+    .menu-item{
+      position:relative;
+      appearance:none;
+      border:0;
+      background:transparent;
+      color:#151515;
+      padding:16px 28px;
+      border-radius:999px;
+      font-family:inherit;
+      font-size:clamp(18px, 1.7vw, 22px);
+      line-height:1;
+      letter-spacing:-0.02em;
+      font-weight:500;
+      white-space:nowrap;
+      cursor:pointer;
+      transition:
+        background 160ms ease,
+        box-shadow 160ms ease,
+        color 160ms ease;
+      overflow:hidden;
+      isolation:isolate;
+    }
+
+    .menu-item span{
+      position:relative;
+      z-index:2;
+    }
+
+    .menu-item::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:0;
+      border-radius:inherit;
+      background:
+        linear-gradient(115deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0.10) 28%,
+          rgba(255,255,255,0.22) 42%,
+          rgba(255,255,255,0.06) 56%,
+          rgba(255,255,255,0) 72%);
+      background-size:200% 200%;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .menu-item:hover,
+    .menu-item.previewing,
+    .menu-item.active{
+      background:var(--pill);
+      color:#111111;
+      box-shadow:0 7px 16px rgba(0,0,0,0.038);
+    }
+
+    .menu-item:hover::before,
+    .menu-item.previewing::before,
+    .menu-item.active::before{
+      opacity:1;
+      animation:subtlePillMove 3.4s linear infinite;
+    }
+
+    .menu-item.active{
+      font-weight:700;
+    }
+
+    @keyframes powderFlow{
+      0%{background-position:0% 50%}
+      25%{background-position:28% 35%}
+      50%{background-position:100% 50%}
+      75%{background-position:72% 70%}
+      100%{background-position:0% 50%}
+    }
+
+    @keyframes surfaceSweep{
+      0%{background-position:0% 50%}
+      100%{background-position:220% 50%}
+    }
+
+    @keyframes glassSweep{
+      0%{transform:translateX(-56%)}
+      50%{transform:translateX(18%)}
+      100%{transform:translateX(-56%)}
+    }
+
+    @keyframes subtlePillMove{
+      0%{background-position:0% 50%}
+      100%{background-position:200% 50%}
+    }
+
+    @media (max-width: 980px){
+      .shell{
+        padding:20px 14px 34px 14px;
+      }
+
+      .frame{
+        gap:20px;
+      }
+
+      .hero{
+        min-height:430px;
+      }
+
+      .hero-content{
+        min-height:430px;
+        padding:30px 24px;
+      }
+
+      .text-stage{
+        min-height:110px;
+      }
+
+      .menu{
+        grid-template-columns:58px 1fr 58px;
+        padding:14px;
+      }
+
+      .icon-btn{
+        width:52px;
+        height:52px;
+        font-size:18px;
+      }
+
+      .menu-item{
+        padding:14px 18px;
+        font-size:17px;
+      }
+    }
+
+    @media (max-width: 700px){
+      .hero{
+        min-height:360px;
+      }
+
+      .hero-content{
+        min-height:360px;
+        padding:24px 16px;
+      }
+
+      .hello-big{
+        font-size:clamp(42px, 12vw, 70px);
+      }
+
+      .state-title{
+        font-size:clamp(28px, 9vw, 48px);
+      }
+
+      .menu{
+        grid-template-columns:50px 1fr 50px;
+        gap:8px;
+        padding:12px;
+      }
+
+      .icon-btn{
+        width:46px;
+        height:46px;
+        font-size:16px;
+      }
+
+      .menu-items{
+        justify-content:flex-start;
+        overflow:auto;
+        -ms-overflow-style:none;
+        scrollbar-width:none;
+      }
+
+      .menu-items::-webkit-scrollbar{
+        display:none;
+      }
+
+      .menu-item{
+        padding:12px 16px;
+        font-size:16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="frame">
+
+      <section class="hero" id="hero" data-state="home" aria-live="polite">
+        <div class="hero-surface hero-home active" data-surface="home"></div>
+        <div class="hero-surface hero-learning" data-surface="learning"></div>
+        <div class="hero-surface hero-resources" data-surface="resources"></div>
+        <div class="hero-surface hero-compliance" data-surface="compliance"></div>
+        <div class="hero-surface hero-settings" data-surface="settings"></div>
+        <div class="hero-gloss"></div>
+
+        <div class="hero-content">
+          <div class="text-stage" id="textStage">
+            <div class="text-layer active" id="textLayerA"></div>
+            <div class="text-layer" id="textLayerB"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="menu-zone">
+        <nav class="menu-wrap" aria-label="Main menu">
+          <div class="menu">
+
+            <button class="icon-btn home-btn" id="homeBtn" type="button" aria-label="Home">
+              <i class="fa-solid fa-house"></i>
+            </button>
+
+            <div class="menu-items" id="menuItems">
+              <button class="menu-item" type="button" data-key="learning" data-index="0"><span>Learning</span></button>
+              <button class="menu-item" type="button" data-key="resources" data-index="1"><span>Resources</span></button>
+              <button class="menu-item" type="button" data-key="compliance" data-index="2"><span>Compliance</span></button>
+            </div>
+
+            <button class="icon-btn settings-btn" id="settingsBtn" type="button" aria-label="Settings">
+              <i class="fa-solid fa-gear"></i>
+            </button>
+
+          </div>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const hero = document.getElementById('hero');
+    const menuItemsWrap = document.getElementById('menuItems');
+    const menuButtons = Array.from(document.querySelectorAll('.menu-item'));
+    const homeBtn = document.getElementById('homeBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
+
+    const layerA = document.getElementById('textLayerA');
+    const layerB = document.getElementById('textLayerB');
+
+    const states = {
+      home: {
+        index: -1,
+        html: `
+          <h1 class="hello-big">Hello</h1>
+          <p class="hello-small">Click on an item to begin</p>
+        `
+      },
+      learning: {
+        index: 0,
+        html: `<h1 class="state-title">Learning</h1>`
+      },
+      resources: {
+        index: 1,
+        html: `<h1 class="state-title">Resources</h1>`
+      },
+      compliance: {
+        index: 2,
+        html: `<h1 class="state-title">Compliance</h1>`
+      },
+      settings: {
+        index: 3,
+        html: `<h1 class="state-title">Settings</h1>`
+      }
+    };
+
+    let activeKey = 'home';
+    let previewKey = null;
+    let visibleLayer = layerA;
+    let hiddenLayer = layerB;
+    let currentIndex = -1;
+
+    function swapLayers(){
+      const temp = visibleLayer;
+      visibleLayer = hiddenLayer;
+      hiddenLayer = temp;
+    }
+
+    function setSurface(key){
+      surfaces.forEach(surface => {
+        surface.classList.toggle('active', surface.dataset.surface === key);
+      });
+
+      if(key === 'home'){
+        hero.classList.remove('has-colour');
+      } else {
+        hero.classList.add('has-colour');
+      }
+
+      hero.setAttribute('data-state', key);
+    }
+
+    function transitionText(key, direction){
+      const content = states[key].html;
+
+      hiddenLayer.innerHTML = content;
+      hiddenLayer.className = 'text-layer';
+
+      if(direction === 'right'){
+        visibleLayer.classList.remove('active');
+        visibleLayer.classList.add('exit-left');
+        hiddenLayer.classList.add('enter-right');
+      } else if(direction === 'left'){
+        visibleLayer.classList.remove('active');
+        visibleLayer.classList.add('exit-right');
+        hiddenLayer.classList.add('enter-left');
+      } else {
+        visibleLayer.classList.remove('active');
+      }
+
+      requestAnimationFrame(() => {
+        hiddenLayer.classList.add('active');
+        hiddenLayer.classList.remove('enter-left', 'enter-right');
+      });
+
+      setTimeout(() => {
+        visibleLayer.className = 'text-layer';
+        swapLayers();
+      }, 390);
+    }
+
+    function getDirection(fromIndex, toIndex){
+      if(toIndex > fromIndex) return 'right';
+      if(toIndex < fromIndex) return 'left';
+      return 'none';
+    }
+
+    function clearButtonStates(){
+      menuButtons.forEach(btn => btn.classList.remove('active', 'previewing'));
+    }
+
+    function setHero(key){
+      const nextIndex = states[key].index;
+      const direction = getDirection(currentIndex, nextIndex);
+      setSurface(key);
+      transitionText(key, direction);
+      currentIndex = nextIndex;
+    }
+
+    function setActive(key){
+      activeKey = key;
+      previewKey = null;
+
+      clearButtonStates();
+
+      if(key === 'home'){
+        setHero('home');
+        return;
+      }
+
+      const btn = menuButtons.find(b => b.dataset.key === key);
+      if(btn) btn.classList.add('active');
+
+      setHero(key);
+    }
+
+    function setPreview(key){
+      previewKey = key;
+
+      clearButtonStates();
+
+      if(activeKey !== 'home'){
+        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
+        if(activeBtn && activeBtn.dataset.key !== key){
+          activeBtn.classList.add('active');
+        }
+      }
+
+      const previewBtn = menuButtons.find(b => b.dataset.key === key);
+      if(previewBtn) previewBtn.classList.add('previewing');
+
+      setHero(key);
+    }
+
+    function clearPreview(){
+      if(previewKey === null) return;
+      previewKey = null;
+
+      clearButtonStates();
+
+      if(activeKey !== 'home'){
+        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
+        if(activeBtn) activeBtn.classList.add('active');
+      }
+
+      setHero(activeKey);
+    }
+
+    menuButtons.forEach(btn => {
+      const key = btn.dataset.key;
+
+      btn.addEventListener('mouseenter', () => setPreview(key));
+      btn.addEventListener('focus', () => setPreview(key));
+      btn.addEventListener('click', () => setActive(key));
+    });
+
+    menuItemsWrap.addEventListener('mouseleave', clearPreview);
+    menuItemsWrap.addEventListener('focusout', (e) => {
+      if (!menuItemsWrap.contains(e.relatedTarget)) {
+        clearPreview();
+      }
+    });
+
+    homeBtn.addEventListener('mouseenter', () => setHero('home'));
+    homeBtn.addEventListener('mouseleave', () => {
+      if(previewKey !== null){
+        setHero(previewKey);
+      } else {
+        setHero(activeKey);
+      }
+    });
+    homeBtn.addEventListener('click', () => setActive('home'));
+
+    settingsBtn.addEventListener('mouseenter', () => setHero('settings'));
+    settingsBtn.addEventListener('mouseleave', () => {
+      if(previewKey !== null){
+        setHero(previewKey);
+      } else {
+        setHero(activeKey);
+      }
+    });
+    settingsBtn.addEventListener('focus', () => setHero('settings'));
+    settingsBtn.addEventListener('blur', () => {
+      if(previewKey !== null){
+        setHero(previewKey);
+      } else {
+        setHero(activeKey);
+      }
+    });
+    settingsBtn.addEventListener('click', () => setActive('settings'));
+
+    hero.addEventListener('click', () => {
+      const current = previewKey || activeKey;
+      if(current === 'home') return;
+
+      const activeSurface = document.querySelector(`.hero-surface[data-surface="${current}"]`);
+      if(!activeSurface) return;
+
+      activeSurface.style.animationDuration =
+        activeSurface.style.animationDuration === '6.6s' ? '10s' : '6.6s';
+    });
+
+    // initial render
+    layerA.innerHTML = states.home.html;
+    layerA.className = 'text-layer active';
+    layerB.className = 'text-layer';
+    setSurface('home');
+  </script>
+</body>
+</html>
