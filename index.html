@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Glass Menu Demo</title>
 
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
   <style>
@@ -21,55 +20,45 @@
       --menu-radius:34px;
       --hero-shadow:0 14px 38px rgba(0,0,0,0.045);
       --menu-shadow:
-          0 16px 36px rgba(0,0,0,0.10),
-          0 6px 16px rgba(0,0,0,0.05),
-          inset 0 1px 0 rgba(255,255,255,0.92);
+        0 16px 36px rgba(0,0,0,0.10),
+        0 6px 16px rgba(0,0,0,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.92);
       --ease:cubic-bezier(.22,.7,.1,1);
     }
 
     *{box-sizing:border-box}
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  font-family: Lato, Arial, sans-serif;
-  color: var(--text);
-  overflow-x: hidden;
-}
 
-body {
-  margin: 0;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      font-family: Lato, Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
-.shell{
-  width:100%;
-  padding:24px;
-  display:flex;
-  justify-content:center;
-  background:#ffffff;
-}
+    body {
+      margin: 0;
+    }
 
-.frame{
-  width:min(1320px,100%);
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-
-.hero{
-  min-height:460px;
-}
-
-.hero-content{
-  min-height:460px;
-}
+    .shell{
+      width:100%;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+      background:#ffffff;
+    }
 
     .frame{
       width:min(1320px,100%);
-      min-height:calc(100vh - 92px);
+      min-height:calc(100vh - 48px);
       display:flex;
       flex-direction:column;
       gap:28px;
+    }
+
+    .mobile-welcome{
+      display:none;
     }
 
     /* HERO */
@@ -411,6 +400,116 @@ body {
       font-weight:700;
     }
 
+    /* MOBILE MENU */
+    .mobile-menu{
+      display:none;
+      position:relative;
+      z-index:2;
+    }
+
+    .mobile-menu-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:8px 6px;
+    }
+
+    .mobile-menu-heading{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      min-width:0;
+    }
+
+    .mobile-menu-label{
+      margin:0;
+      font-size:18px;
+      line-height:1.1;
+      font-weight:700;
+      letter-spacing:-0.03em;
+      color:#111111;
+    }
+
+    .mobile-menu-caption{
+      margin:0;
+      font-size:12px;
+      line-height:1.3;
+      color:#7a7a7a;
+      letter-spacing:0.01em;
+    }
+
+    .burger-btn{
+      width:52px;
+      height:52px;
+      flex:0 0 auto;
+      background:rgba(255,255,255,0.78);
+      border:1px solid rgba(255,255,255,0.92);
+      box-shadow:
+        0 8px 16px rgba(0,0,0,0.045),
+        inset 0 1px 0 rgba(255,255,255,1);
+      font-size:18px;
+    }
+
+    .mobile-menu-panel{
+      max-height:0;
+      opacity:0;
+      overflow:hidden;
+      transition:
+        max-height 280ms var(--ease),
+        opacity 180ms ease,
+        padding-top 180ms ease;
+      padding-top:0;
+    }
+
+    .mobile-menu.open .mobile-menu-panel{
+      max-height:420px;
+      opacity:1;
+      padding-top:8px;
+    }
+
+    .mobile-menu-list{
+      display:grid;
+      gap:10px;
+      padding:0 6px 6px 6px;
+    }
+
+    .mobile-link{
+      width:100%;
+      appearance:none;
+      border:1px solid rgba(255,255,255,0.78);
+      background:rgba(255,255,255,0.68);
+      color:#111111;
+      border-radius:18px;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-family:inherit;
+      font-size:15px;
+      line-height:1;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:
+        0 8px 18px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.96);
+      transition:
+        transform 160ms ease,
+        background 160ms ease,
+        box-shadow 160ms ease;
+    }
+
+    .mobile-link:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.85);
+    }
+
+    .mobile-link i{
+      font-size:13px;
+      color:#7b7b7b;
+    }
+
     @keyframes powderFlow{
       0%{background-position:0% 50%}
       25%{background-position:28% 35%}
@@ -475,49 +574,66 @@ body {
     }
 
     @media (max-width: 700px){
+      .shell{
+        padding:18px 14px 26px 14px;
+      }
+
+      .frame{
+        min-height:auto;
+        gap:14px;
+      }
+
+      .mobile-welcome{
+        display:block;
+        padding:2px 4px 0 4px;
+      }
+
+      .mobile-welcome h1{
+        margin:0;
+        font-size:30px;
+        line-height:0.98;
+        letter-spacing:-0.05em;
+        font-weight:800;
+        color:#111111;
+      }
+
+      .mobile-welcome p{
+        margin:8px 0 0 0;
+        font-size:13px;
+        line-height:1.35;
+        color:#808080;
+        letter-spacing:0.01em;
+      }
+
       .hero{
-        min-height:360px;
-      }
-
-      .hero-content{
-        min-height:360px;
-        padding:24px 16px;
-      }
-
-      .hello-big{
-        font-size:clamp(42px, 12vw, 70px);
-      }
-
-      .state-title{
-        font-size:clamp(28px, 9vw, 48px);
-      }
-
-      .menu{
-        grid-template-columns:50px 1fr 50px;
-        gap:8px;
-        padding:12px;
-      }
-
-      .icon-btn{
-        width:46px;
-        height:46px;
-        font-size:16px;
-      }
-
-      .menu-items{
-        justify-content:flex-start;
-        overflow:auto;
-        -ms-overflow-style:none;
-        scrollbar-width:none;
-      }
-
-      .menu-items::-webkit-scrollbar{
         display:none;
       }
 
-      .menu-item{
-        padding:12px 16px;
-        font-size:16px;
+      .menu-zone{
+        margin-top:0;
+      }
+
+      .menu-wrap{
+        min-height:auto;
+        border-radius:28px;
+        padding:8px;
+        box-shadow:
+          0 12px 26px rgba(0,0,0,0.08),
+          0 4px 12px rgba(0,0,0,0.04),
+          inset 0 1px 0 rgba(255,255,255,0.9);
+      }
+
+      .menu-wrap::before{
+        inset:-55% -35%;
+        opacity:0.8;
+      }
+
+      .menu.desktop-menu{
+        display:none;
+      }
+
+      .mobile-menu{
+        display:block;
       }
     }
   </style>
@@ -525,6 +641,11 @@ body {
 <body>
   <div class="shell">
     <div class="frame">
+
+      <div class="mobile-welcome">
+        <h1>Welcome</h1>
+        <p>Choose a destination from the menu below</p>
+      </div>
 
       <section class="hero" id="hero" data-state="home" aria-live="polite">
         <div class="hero-surface hero-home active" data-surface="home"></div>
@@ -544,8 +665,8 @@ body {
 
       <div class="menu-zone">
         <nav class="menu-wrap" aria-label="Main menu">
-          <div class="menu">
 
+          <div class="menu desktop-menu">
             <button class="icon-btn home-btn" id="homeBtn" type="button" aria-label="Home">
               <i class="fa-solid fa-house"></i>
             </button>
@@ -559,254 +680,338 @@ body {
             <button class="icon-btn settings-btn" id="settingsBtn" type="button" aria-label="Settings">
               <i class="fa-solid fa-gear"></i>
             </button>
-
           </div>
+
+          <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-bar">
+              <div class="mobile-menu-heading">
+                <p class="mobile-menu-label">Menu</p>
+                <p class="mobile-menu-caption">Open shortcuts and links</p>
+              </div>
+
+              <button
+                class="icon-btn burger-btn"
+                id="burgerBtn"
+                type="button"
+                aria-label="Open menu"
+                aria-expanded="false"
+                aria-controls="mobileMenuPanel">
+                <i class="fa-solid fa-bars"></i>
+              </button>
+            </div>
+
+            <div class="mobile-menu-panel" id="mobileMenuPanel">
+              <div class="mobile-menu-list">
+                <button class="mobile-link" type="button" data-key="learning">
+                  <span>Learning</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+
+                <button class="mobile-link" type="button" data-key="resources">
+                  <span>Resources</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+
+                <button class="mobile-link" type="button" data-key="compliance">
+                  <span>Compliance</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+
+                <button class="mobile-link" type="button" data-key="settings">
+                  <span>Settings</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
         </nav>
       </div>
 
     </div>
   </div>
 
-<script>
-  const hero = document.getElementById('hero');
-  const menuItemsWrap = document.getElementById('menuItems');
-  const menuButtons = Array.from(document.querySelectorAll('.menu-item'));
-  const homeBtn = document.getElementById('homeBtn');
-  const settingsBtn = document.getElementById('settingsBtn');
-  const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
+  <script>
+    const hero = document.getElementById('hero');
+    const menuItemsWrap = document.getElementById('menuItems');
+    const menuButtons = Array.from(document.querySelectorAll('.menu-item'));
+    const homeBtn = document.getElementById('homeBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
 
-  const layerA = document.getElementById('textLayerA');
-  const layerB = document.getElementById('textLayerB');
+    const layerA = document.getElementById('textLayerA');
+    const layerB = document.getElementById('textLayerB');
 
-  const states = {
-    home: {
-      index: -1,
-      html: `
-        <h1 class="hello-big">Hello</h1>
-        <p class="hello-small">Click on an item to begin</p>
-      `
-    },
-    learning: {
-      index: 0,
-      html: `<h1 class="state-title">Learning</h1>`
-    },
-    resources: {
-      index: 1,
-      html: `<h1 class="state-title">Resources</h1>`
-    },
-    compliance: {
-      index: 2,
-      html: `<h1 class="state-title">Compliance</h1>`
-    },
-    settings: {
-      index: 3,
-      html: `<h1 class="state-title">Settings</h1>`
-    }
-  };
+    const mobileMenu = document.getElementById('mobileMenu');
+    const burgerBtn = document.getElementById('burgerBtn');
+    const burgerIcon = burgerBtn.querySelector('i');
+    const mobileLinks = Array.from(document.querySelectorAll('.mobile-link'));
 
-  const links = {
-    home: null,
-    learning: "https://khepri.agca.app/my-activities",
-    resources: "https://khepri.agca.app/resource-hub",
-    compliance: "https://khepri.agca.app/compliance",
-    settings: "https://khepri.agca.app/profile"
-  };
-
-  function openInNewTab(url){
-    if (!url) return;
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
-
-  let activeKey = 'home';
-  let previewKey = null;
-  let visibleLayer = layerA;
-  let hiddenLayer = layerB;
-  let currentIndex = -1;
-
-  function swapLayers(){
-    const temp = visibleLayer;
-    visibleLayer = hiddenLayer;
-    hiddenLayer = temp;
-  }
-
-  function setSurface(key){
-    surfaces.forEach(surface => {
-      surface.classList.toggle('active', surface.dataset.surface === key);
-    });
-
-    if(key === 'home'){
-      hero.classList.remove('has-colour');
-    } else {
-      hero.classList.add('has-colour');
-    }
-
-    hero.setAttribute('data-state', key);
-  }
-
-  function transitionText(key, direction){
-    const content = states[key].html;
-
-    hiddenLayer.innerHTML = content;
-    hiddenLayer.className = 'text-layer';
-
-    if(direction === 'right'){
-      visibleLayer.classList.remove('active');
-      visibleLayer.classList.add('exit-left');
-      hiddenLayer.classList.add('enter-right');
-    } else if(direction === 'left'){
-      visibleLayer.classList.remove('active');
-      visibleLayer.classList.add('exit-right');
-      hiddenLayer.classList.add('enter-left');
-    } else {
-      visibleLayer.classList.remove('active');
-    }
-
-    requestAnimationFrame(() => {
-      hiddenLayer.classList.add('active');
-      hiddenLayer.classList.remove('enter-left', 'enter-right');
-    });
-
-    setTimeout(() => {
-      visibleLayer.className = 'text-layer';
-      swapLayers();
-    }, 390);
-  }
-
-  function getDirection(fromIndex, toIndex){
-    if(toIndex > fromIndex) return 'right';
-    if(toIndex < fromIndex) return 'left';
-    return 'none';
-  }
-
-  function clearButtonStates(){
-    menuButtons.forEach(btn => btn.classList.remove('active', 'previewing'));
-  }
-
-  function setHero(key){
-    const nextIndex = states[key].index;
-    const direction = getDirection(currentIndex, nextIndex);
-    setSurface(key);
-    transitionText(key, direction);
-    currentIndex = nextIndex;
-  }
-
-  function setActive(key){
-    activeKey = key;
-    previewKey = null;
-
-    clearButtonStates();
-
-    if(key === 'home'){
-      setHero('home');
-      return;
-    }
-
-    const btn = menuButtons.find(b => b.dataset.key === key);
-    if(btn) btn.classList.add('active');
-
-    setHero(key);
-  }
-
-  function setPreview(key){
-    previewKey = key;
-
-    clearButtonStates();
-
-    if(activeKey !== 'home'){
-      const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
-      if(activeBtn && activeBtn.dataset.key !== key){
-        activeBtn.classList.add('active');
+    const states = {
+      home: {
+        index: -1,
+        html: `
+          <h1 class="hello-big">Hello</h1>
+          <p class="hello-small">Click on an item to begin</p>
+        `
+      },
+      learning: {
+        index: 0,
+        html: `<h1 class="state-title">Learning</h1>`
+      },
+      resources: {
+        index: 1,
+        html: `<h1 class="state-title">Resources</h1>`
+      },
+      compliance: {
+        index: 2,
+        html: `<h1 class="state-title">Compliance</h1>`
+      },
+      settings: {
+        index: 3,
+        html: `<h1 class="state-title">Settings</h1>`
       }
+    };
+
+    const links = {
+      home: null,
+      learning: "https://khepri.agca.app/my-activities",
+      resources: "https://khepri.agca.app/resource-hub",
+      compliance: "https://khepri.agca.app/compliance",
+      settings: "https://khepri.agca.app/profile"
+    };
+
+    function openInNewTab(url){
+      if (!url) return;
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
 
-    const previewBtn = menuButtons.find(b => b.dataset.key === key);
-    if(previewBtn) previewBtn.classList.add('previewing');
+    let activeKey = 'home';
+    let previewKey = null;
+    let visibleLayer = layerA;
+    let hiddenLayer = layerB;
+    let currentIndex = -1;
 
-    setHero(key);
-  }
-
-  function clearPreview(){
-    if(previewKey === null) return;
-    previewKey = null;
-
-    clearButtonStates();
-
-    if(activeKey !== 'home'){
-      const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
-      if(activeBtn) activeBtn.classList.add('active');
+    function swapLayers(){
+      const temp = visibleLayer;
+      visibleLayer = hiddenLayer;
+      hiddenLayer = temp;
     }
 
-    setHero(activeKey);
-  }
+    function setSurface(key){
+      surfaces.forEach(surface => {
+        surface.classList.toggle('active', surface.dataset.surface === key);
+      });
 
-  menuButtons.forEach(btn => {
-    const key = btn.dataset.key;
+      if(key === 'home'){
+        hero.classList.remove('has-colour');
+      } else {
+        hero.classList.add('has-colour');
+      }
 
-    btn.addEventListener('mouseenter', () => setPreview(key));
-    btn.addEventListener('focus', () => setPreview(key));
-    btn.addEventListener('click', () => {
-      setActive(key);
-      openInNewTab(links[key]);
+      hero.setAttribute('data-state', key);
+    }
+
+    function transitionText(key, direction){
+      const content = states[key].html;
+
+      hiddenLayer.innerHTML = content;
+      hiddenLayer.className = 'text-layer';
+
+      if(direction === 'right'){
+        visibleLayer.classList.remove('active');
+        visibleLayer.classList.add('exit-left');
+        hiddenLayer.classList.add('enter-right');
+      } else if(direction === 'left'){
+        visibleLayer.classList.remove('active');
+        visibleLayer.classList.add('exit-right');
+        hiddenLayer.classList.add('enter-left');
+      } else {
+        visibleLayer.classList.remove('active');
+      }
+
+      requestAnimationFrame(() => {
+        hiddenLayer.classList.add('active');
+        hiddenLayer.classList.remove('enter-left', 'enter-right');
+      });
+
+      setTimeout(() => {
+        visibleLayer.className = 'text-layer';
+        swapLayers();
+      }, 390);
+    }
+
+    function getDirection(fromIndex, toIndex){
+      if(toIndex > fromIndex) return 'right';
+      if(toIndex < fromIndex) return 'left';
+      return 'none';
+    }
+
+    function clearButtonStates(){
+      menuButtons.forEach(btn => btn.classList.remove('active', 'previewing'));
+    }
+
+    function setHero(key){
+      const nextIndex = states[key].index;
+      const direction = getDirection(currentIndex, nextIndex);
+      setSurface(key);
+      transitionText(key, direction);
+      currentIndex = nextIndex;
+    }
+
+    function setActive(key){
+      activeKey = key;
+      previewKey = null;
+
+      clearButtonStates();
+
+      if(key === 'home'){
+        setHero('home');
+        return;
+      }
+
+      const btn = menuButtons.find(b => b.dataset.key === key);
+      if(btn) btn.classList.add('active');
+
+      setHero(key);
+    }
+
+    function setPreview(key){
+      previewKey = key;
+
+      clearButtonStates();
+
+      if(activeKey !== 'home'){
+        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
+        if(activeBtn && activeBtn.dataset.key !== key){
+          activeBtn.classList.add('active');
+        }
+      }
+
+      const previewBtn = menuButtons.find(b => b.dataset.key === key);
+      if(previewBtn) previewBtn.classList.add('previewing');
+
+      setHero(key);
+    }
+
+    function clearPreview(){
+      if(previewKey === null) return;
+      previewKey = null;
+
+      clearButtonStates();
+
+      if(activeKey !== 'home'){
+        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
+        if(activeBtn) activeBtn.classList.add('active');
+      }
+
+      setHero(activeKey);
+    }
+
+    function closeMobileMenu(){
+      mobileMenu.classList.remove('open');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+      burgerBtn.setAttribute('aria-label', 'Open menu');
+      burgerIcon.className = 'fa-solid fa-bars';
+    }
+
+    function toggleMobileMenu(){
+      const isOpen = mobileMenu.classList.toggle('open');
+      burgerBtn.setAttribute('aria-expanded', String(isOpen));
+      burgerBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      burgerIcon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    }
+
+    menuButtons.forEach(btn => {
+      const key = btn.dataset.key;
+
+      btn.addEventListener('mouseenter', () => setPreview(key));
+      btn.addEventListener('focus', () => setPreview(key));
+      btn.addEventListener('click', () => {
+        setActive(key);
+        openInNewTab(links[key]);
+      });
     });
-  });
 
-  menuItemsWrap.addEventListener('mouseleave', clearPreview);
-  menuItemsWrap.addEventListener('focusout', (e) => {
-    if (!menuItemsWrap.contains(e.relatedTarget)) {
-      clearPreview();
-    }
-  });
+    menuItemsWrap.addEventListener('mouseleave', clearPreview);
+    menuItemsWrap.addEventListener('focusout', (e) => {
+      if (!menuItemsWrap.contains(e.relatedTarget)) {
+        clearPreview();
+      }
+    });
 
-  homeBtn.addEventListener('mouseenter', () => setHero('home'));
-  homeBtn.addEventListener('mouseleave', () => {
-    if(previewKey !== null){
-      setHero(previewKey);
-    } else {
-      setHero(activeKey);
-    }
-  });
-  homeBtn.addEventListener('click', () => {
-    setActive('home');
-    openInNewTab(links.home);
-  });
+    homeBtn.addEventListener('mouseenter', () => setHero('home'));
+    homeBtn.addEventListener('mouseleave', () => {
+      if(previewKey !== null){
+        setHero(previewKey);
+      } else {
+        setHero(activeKey);
+      }
+    });
+    homeBtn.addEventListener('click', () => {
+      setActive('home');
+      openInNewTab(links.home);
+    });
 
-  settingsBtn.addEventListener('mouseenter', () => setHero('settings'));
-  settingsBtn.addEventListener('mouseleave', () => {
-    if(previewKey !== null){
-      setHero(previewKey);
-    } else {
-      setHero(activeKey);
-    }
-  });
-  settingsBtn.addEventListener('focus', () => setHero('settings'));
-  settingsBtn.addEventListener('blur', () => {
-    if(previewKey !== null){
-      setHero(previewKey);
-    } else {
-      setHero(activeKey);
-    }
-  });
-  settingsBtn.addEventListener('click', () => {
-    setActive('settings');
-    openInNewTab(links.settings);
-  });
+    settingsBtn.addEventListener('mouseenter', () => setHero('settings'));
+    settingsBtn.addEventListener('mouseleave', () => {
+      if(previewKey !== null){
+        setHero(previewKey);
+      } else {
+        setHero(activeKey);
+      }
+    });
+    settingsBtn.addEventListener('focus', () => setHero('settings'));
+    settingsBtn.addEventListener('blur', () => {
+      if(previewKey !== null){
+        setHero(previewKey);
+      } else {
+        setHero(activeKey);
+      }
+    });
+    settingsBtn.addEventListener('click', () => {
+      setActive('settings');
+      openInNewTab(links.settings);
+    });
 
-  hero.addEventListener('click', () => {
-    const current = previewKey || activeKey;
-    if(current === 'home') return;
+    burgerBtn.addEventListener('click', toggleMobileMenu);
 
-    const activeSurface = document.querySelector(`.hero-surface[data-surface="${current}"]`);
-    if(!activeSurface) return;
+    mobileLinks.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.key;
+        closeMobileMenu();
+        openInNewTab(links[key]);
+      });
+    });
 
-    activeSurface.style.animationDuration =
-      activeSurface.style.animationDuration === '6.6s' ? '10s' : '6.6s';
-  });
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth > 700) return;
+      if (!mobileMenu.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
 
-  // initial render
-  layerA.innerHTML = states.home.html;
-  layerA.className = 'text-layer active';
-  layerB.className = 'text-layer';
-  setSurface('home');
-</script>
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 700) {
+        closeMobileMenu();
+      }
+    });
+
+    hero.addEventListener('click', () => {
+      const current = previewKey || activeKey;
+      if(current === 'home') return;
+
+      const activeSurface = document.querySelector(`.hero-surface[data-surface="${current}"]`);
+      if(!activeSurface) return;
+
+      activeSurface.style.animationDuration =
+        activeSurface.style.animationDuration === '6.6s' ? '10s' : '6.6s';
+    });
+
+    layerA.innerHTML = states.home.html;
+    layerA.className = 'text-layer active';
+    layerB.className = 'text-layer';
+    setSurface('home');
+  </script>
 </body>
 </html>
