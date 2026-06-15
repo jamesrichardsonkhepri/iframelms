@@ -554,224 +554,247 @@
     </div>
   </div>
 
-  <script>
-    const hero = document.getElementById('hero');
-    const menuItemsWrap = document.getElementById('menuItems');
-    const menuButtons = Array.from(document.querySelectorAll('.menu-item'));
-    const homeBtn = document.getElementById('homeBtn');
-    const settingsBtn = document.getElementById('settingsBtn');
-    const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
+<script>
+  const hero = document.getElementById('hero');
+  const menuItemsWrap = document.getElementById('menuItems');
+  const menuButtons = Array.from(document.querySelectorAll('.menu-item'));
+  const homeBtn = document.getElementById('homeBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
 
-    const layerA = document.getElementById('textLayerA');
-    const layerB = document.getElementById('textLayerB');
+  const layerA = document.getElementById('textLayerA');
+  const layerB = document.getElementById('textLayerB');
 
-    const states = {
-      home: {
-        index: -1,
-        html: `
-          <h1 class="hello-big">Hello</h1>
-          <p class="hello-small">Click on an item to begin</p>
-        `
-      },
-      learning: {
-        index: 0,
-        html: `<h1 class="state-title">Learning</h1>`
-      },
-      resources: {
-        index: 1,
-        html: `<h1 class="state-title">Resources</h1>`
-      },
-      compliance: {
-        index: 2,
-        html: `<h1 class="state-title">Compliance</h1>`
-      },
-      settings: {
-        index: 3,
-        html: `<h1 class="state-title">Settings</h1>`
+  const states = {
+    home: {
+      index: -1,
+      html: `
+        <h1 class="hello-big">Hello</h1>
+        <p class="hello-small">Click on an item to begin</p>
+      `
+    },
+    learning: {
+      index: 0,
+      html: `<h1 class="state-title">Learning</h1>`
+    },
+    resources: {
+      index: 1,
+      html: `<h1 class="state-title">Resources</h1>`
+    },
+    compliance: {
+      index: 2,
+      html: `<h1 class="state-title">Compliance</h1>`
+    },
+    settings: {
+      index: 3,
+      html: `<h1 class="state-title">Settings</h1>`
+    }
+  };
+
+  const links = {
+    home: null,
+    learning: "https://khepri.agca.app/my-activities",
+    resources: "https://khepri.agca.app/resource-hub",
+    compliance: "https://khepri.agca.app/compliance",
+    settings: "https://khepri.agca.app/profile"
+  };
+
+  function openInNewTab(url){
+    if (!url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  let activeKey = 'home';
+  let previewKey = null;
+  let visibleLayer = layerA;
+  let hiddenLayer = layerB;
+  let currentIndex = -1;
+
+  function swapLayers(){
+    const temp = visibleLayer;
+    visibleLayer = hiddenLayer;
+    hiddenLayer = temp;
+  }
+
+  function setSurface(key){
+    surfaces.forEach(surface => {
+      surface.classList.toggle('active', surface.dataset.surface === key);
+    });
+
+    if(key === 'home'){
+      hero.classList.remove('has-colour');
+    } else {
+      hero.classList.add('has-colour');
+    }
+
+    hero.setAttribute('data-state', key);
+  }
+
+  function transitionText(key, direction){
+    const content = states[key].html;
+
+    hiddenLayer.innerHTML = content;
+    hiddenLayer.className = 'text-layer';
+
+    if(direction === 'right'){
+      visibleLayer.classList.remove('active');
+      visibleLayer.classList.add('exit-left');
+      hiddenLayer.classList.add('enter-right');
+    } else if(direction === 'left'){
+      visibleLayer.classList.remove('active');
+      visibleLayer.classList.add('exit-right');
+      hiddenLayer.classList.add('enter-left');
+    } else {
+      visibleLayer.classList.remove('active');
+    }
+
+    requestAnimationFrame(() => {
+      hiddenLayer.classList.add('active');
+      hiddenLayer.classList.remove('enter-left', 'enter-right');
+    });
+
+    setTimeout(() => {
+      visibleLayer.className = 'text-layer';
+      swapLayers();
+    }, 390);
+  }
+
+  function getDirection(fromIndex, toIndex){
+    if(toIndex > fromIndex) return 'right';
+    if(toIndex < fromIndex) return 'left';
+    return 'none';
+  }
+
+  function clearButtonStates(){
+    menuButtons.forEach(btn => btn.classList.remove('active', 'previewing'));
+  }
+
+  function setHero(key){
+    const nextIndex = states[key].index;
+    const direction = getDirection(currentIndex, nextIndex);
+    setSurface(key);
+    transitionText(key, direction);
+    currentIndex = nextIndex;
+  }
+
+  function setActive(key){
+    activeKey = key;
+    previewKey = null;
+
+    clearButtonStates();
+
+    if(key === 'home'){
+      setHero('home');
+      return;
+    }
+
+    const btn = menuButtons.find(b => b.dataset.key === key);
+    if(btn) btn.classList.add('active');
+
+    setHero(key);
+  }
+
+  function setPreview(key){
+    previewKey = key;
+
+    clearButtonStates();
+
+    if(activeKey !== 'home'){
+      const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
+      if(activeBtn && activeBtn.dataset.key !== key){
+        activeBtn.classList.add('active');
       }
-    };
-
-    let activeKey = 'home';
-    let previewKey = null;
-    let visibleLayer = layerA;
-    let hiddenLayer = layerB;
-    let currentIndex = -1;
-
-    function swapLayers(){
-      const temp = visibleLayer;
-      visibleLayer = hiddenLayer;
-      hiddenLayer = temp;
     }
 
-    function setSurface(key){
-      surfaces.forEach(surface => {
-        surface.classList.toggle('active', surface.dataset.surface === key);
-      });
+    const previewBtn = menuButtons.find(b => b.dataset.key === key);
+    if(previewBtn) previewBtn.classList.add('previewing');
 
-      if(key === 'home'){
-        hero.classList.remove('has-colour');
-      } else {
-        hero.classList.add('has-colour');
-      }
+    setHero(key);
+  }
 
-      hero.setAttribute('data-state', key);
+  function clearPreview(){
+    if(previewKey === null) return;
+    previewKey = null;
+
+    clearButtonStates();
+
+    if(activeKey !== 'home'){
+      const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
+      if(activeBtn) activeBtn.classList.add('active');
     }
 
-    function transitionText(key, direction){
-      const content = states[key].html;
+    setHero(activeKey);
+  }
 
-      hiddenLayer.innerHTML = content;
-      hiddenLayer.className = 'text-layer';
+  menuButtons.forEach(btn => {
+    const key = btn.dataset.key;
 
-      if(direction === 'right'){
-        visibleLayer.classList.remove('active');
-        visibleLayer.classList.add('exit-left');
-        hiddenLayer.classList.add('enter-right');
-      } else if(direction === 'left'){
-        visibleLayer.classList.remove('active');
-        visibleLayer.classList.add('exit-right');
-        hiddenLayer.classList.add('enter-left');
-      } else {
-        visibleLayer.classList.remove('active');
-      }
+    btn.addEventListener('mouseenter', () => setPreview(key));
+    btn.addEventListener('focus', () => setPreview(key));
+    btn.addEventListener('click', () => {
+      setActive(key);
+      openInNewTab(links[key]);
+    });
+  });
 
-      requestAnimationFrame(() => {
-        hiddenLayer.classList.add('active');
-        hiddenLayer.classList.remove('enter-left', 'enter-right');
-      });
-
-      setTimeout(() => {
-        visibleLayer.className = 'text-layer';
-        swapLayers();
-      }, 390);
+  menuItemsWrap.addEventListener('mouseleave', clearPreview);
+  menuItemsWrap.addEventListener('focusout', (e) => {
+    if (!menuItemsWrap.contains(e.relatedTarget)) {
+      clearPreview();
     }
+  });
 
-    function getDirection(fromIndex, toIndex){
-      if(toIndex > fromIndex) return 'right';
-      if(toIndex < fromIndex) return 'left';
-      return 'none';
-    }
-
-    function clearButtonStates(){
-      menuButtons.forEach(btn => btn.classList.remove('active', 'previewing'));
-    }
-
-    function setHero(key){
-      const nextIndex = states[key].index;
-      const direction = getDirection(currentIndex, nextIndex);
-      setSurface(key);
-      transitionText(key, direction);
-      currentIndex = nextIndex;
-    }
-
-    function setActive(key){
-      activeKey = key;
-      previewKey = null;
-
-      clearButtonStates();
-
-      if(key === 'home'){
-        setHero('home');
-        return;
-      }
-
-      const btn = menuButtons.find(b => b.dataset.key === key);
-      if(btn) btn.classList.add('active');
-
-      setHero(key);
-    }
-
-    function setPreview(key){
-      previewKey = key;
-
-      clearButtonStates();
-
-      if(activeKey !== 'home'){
-        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
-        if(activeBtn && activeBtn.dataset.key !== key){
-          activeBtn.classList.add('active');
-        }
-      }
-
-      const previewBtn = menuButtons.find(b => b.dataset.key === key);
-      if(previewBtn) previewBtn.classList.add('previewing');
-
-      setHero(key);
-    }
-
-    function clearPreview(){
-      if(previewKey === null) return;
-      previewKey = null;
-
-      clearButtonStates();
-
-      if(activeKey !== 'home'){
-        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
-        if(activeBtn) activeBtn.classList.add('active');
-      }
-
+  homeBtn.addEventListener('mouseenter', () => setHero('home'));
+  homeBtn.addEventListener('mouseleave', () => {
+    if(previewKey !== null){
+      setHero(previewKey);
+    } else {
       setHero(activeKey);
     }
+  });
+  homeBtn.addEventListener('click', () => {
+    setActive('home');
+    openInNewTab(links.home);
+  });
 
-    menuButtons.forEach(btn => {
-      const key = btn.dataset.key;
+  settingsBtn.addEventListener('mouseenter', () => setHero('settings'));
+  settingsBtn.addEventListener('mouseleave', () => {
+    if(previewKey !== null){
+      setHero(previewKey);
+    } else {
+      setHero(activeKey);
+    }
+  });
+  settingsBtn.addEventListener('focus', () => setHero('settings'));
+  settingsBtn.addEventListener('blur', () => {
+    if(previewKey !== null){
+      setHero(previewKey);
+    } else {
+      setHero(activeKey);
+    }
+  });
+  settingsBtn.addEventListener('click', () => {
+    setActive('settings');
+    openInNewTab(links.settings);
+  });
 
-      btn.addEventListener('mouseenter', () => setPreview(key));
-      btn.addEventListener('focus', () => setPreview(key));
-      btn.addEventListener('click', () => setActive(key));
-    });
+  hero.addEventListener('click', () => {
+    const current = previewKey || activeKey;
+    if(current === 'home') return;
 
-    menuItemsWrap.addEventListener('mouseleave', clearPreview);
-    menuItemsWrap.addEventListener('focusout', (e) => {
-      if (!menuItemsWrap.contains(e.relatedTarget)) {
-        clearPreview();
-      }
-    });
+    const activeSurface = document.querySelector(`.hero-surface[data-surface="${current}"]`);
+    if(!activeSurface) return;
 
-    homeBtn.addEventListener('mouseenter', () => setHero('home'));
-    homeBtn.addEventListener('mouseleave', () => {
-      if(previewKey !== null){
-        setHero(previewKey);
-      } else {
-        setHero(activeKey);
-      }
-    });
-    homeBtn.addEventListener('click', () => setActive('home'));
+    activeSurface.style.animationDuration =
+      activeSurface.style.animationDuration === '6.6s' ? '10s' : '6.6s';
+  });
 
-    settingsBtn.addEventListener('mouseenter', () => setHero('settings'));
-    settingsBtn.addEventListener('mouseleave', () => {
-      if(previewKey !== null){
-        setHero(previewKey);
-      } else {
-        setHero(activeKey);
-      }
-    });
-    settingsBtn.addEventListener('focus', () => setHero('settings'));
-    settingsBtn.addEventListener('blur', () => {
-      if(previewKey !== null){
-        setHero(previewKey);
-      } else {
-        setHero(activeKey);
-      }
-    });
-    settingsBtn.addEventListener('click', () => setActive('settings'));
-
-    hero.addEventListener('click', () => {
-      const current = previewKey || activeKey;
-      if(current === 'home') return;
-
-      const activeSurface = document.querySelector(`.hero-surface[data-surface="${current}"]`);
-      if(!activeSurface) return;
-
-      activeSurface.style.animationDuration =
-        activeSurface.style.animationDuration === '6.6s' ? '10s' : '6.6s';
-    });
-
-    // initial render
-    layerA.innerHTML = states.home.html;
-    layerA.className = 'text-layer active';
-    layerB.className = 'text-layer';
-    setSurface('home');
-  </script>
+  // initial render
+  layerA.innerHTML = states.home.html;
+  layerA.className = 'text-layer active';
+  layerB.className = 'text-layer';
+  setSurface('home');
+</script>
+``
 </body>
 </html>
