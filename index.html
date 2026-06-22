@@ -411,7 +411,7 @@
       height:52px;
       border-radius:999px;
       appearance:none;
-      border:0;
+      border:1px solid transparent;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -421,7 +421,8 @@
       transition:
         transform 160ms ease,
         box-shadow 160ms ease,
-        background 160ms ease;
+        background 160ms ease,
+        border-color 160ms ease;
       flex:0 0 auto;
     }
 
@@ -443,6 +444,14 @@
       box-shadow:
         0 8px 16px rgba(0,0,0,0.04),
         inset 0 1px 0 rgba(255,255,255,0.92);
+    }
+
+    .icon-btn.active{
+      background:var(--pill-strong);
+      box-shadow:
+        0 7px 16px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.65);
+      border-color:rgba(255,255,255,0.7);
     }
 
     .menu-items{
@@ -917,6 +926,7 @@
 
     function renderState(key){
       const state = states[key];
+      if (!state) return;
 
       heroPanel.innerHTML = `
         <div class="state-main">
@@ -931,8 +941,10 @@
           </div>
 
           <div class="cta-row">
-            <a class="primary-cta" href="${state.ctaUrl || '#'}" data-open-link="${state.ctaUrl || ''a-solid fa-arrow-right"></i>
-            </a>
+            <a
+              class="primary-cta"
+              href="${state.ctaUrl || '#'}"
+              data-open-link="${state.ctaUrl ||  </a>
           </div>
         </div>
 
@@ -950,8 +962,11 @@
             </div>
 
             <div class="cta-row">
-              <a class="secondary-cta" href="${state.featureLinkUrl || '#'}" data-open-link="${state.featureLinkUrl || ''"fa-solid fa-arrow-up-right-from-square"></i>
-              </a>
+              <a
+                class="secondary-cta"
+                href="${state.featureLinkUrl || '#'}"
+                data-open-link="${state.featureLinkUrl || ''}"
+             
             </div>
           </div>
         </aside>
@@ -985,31 +1000,27 @@
     }
 
     function setState(key){
+      if (!states[key]) return;
       activeKey = key;
       setSurface(key);
       renderState(key);
       updateMenuState(key);
     }
 
-    /* Core behaviour:
-       - Hovering a menu item changes the tile
-       - That tile stays there
-       - No mouseleave reset
-       - Clicking does the same
-    */
+    /* Hover/focus/click all pin the tile in place */
     menuButtons.forEach(btn => {
       const key = btn.dataset.key;
 
-      btn.addEventListener('mouseenter', () => setState(key));
+      btn.addEventListener('pointerenter', () => setState(key));
       btn.addEventListener('focus', () => setState(key));
       btn.addEventListener('click', () => setState(key));
     });
 
-    settingsBtn.addEventListener('mouseenter', () => setState('settings'));
+    settingsBtn.addEventListener('pointerenter', () => setState('settings'));
     settingsBtn.addEventListener('focus', () => setState('settings'));
     settingsBtn.addEventListener('click', () => setState('settings'));
 
-    homeBtn.addEventListener('mouseenter', () => setState('home'));
+    homeBtn.addEventListener('pointerenter', () => setState('home'));
     homeBtn.addEventListener('focus', () => setState('home'));
     homeBtn.addEventListener('click', () => setState('home'));
 
