@@ -11,51 +11,57 @@
     :root{
       --bg:#ffffff;
       --text:#111111;
-      --muted:#6f6f6f;
+      --muted:#6a6a6a;
 
-      --glass-1:rgba(242,242,242,0.84);
-      --glass-2:rgba(232,232,232,0.58);
-      --glass-border:rgba(255,255,255,0.82);
+      --hero-radius:32px;
+      --menu-radius:28px;
 
-      --pill:#F6DEC9;
-      --hero-radius:34px;
-      --menu-radius:30px;
+      --hero-border:rgba(238,238,238,1);
+      --hero-shadow:0 16px 42px rgba(0,0,0,0.045);
 
-      --hero-shadow:0 14px 38px rgba(0,0,0,0.04);
+      --glass-1:rgba(245,245,245,0.82);
+      --glass-2:rgba(235,235,235,0.58);
+      --glass-border:rgba(255,255,255,0.78);
       --menu-shadow:
-        0 16px 36px rgba(0,0,0,0.08),
-        0 6px 16px rgba(0,0,0,0.04),
-        inset 0 1px 0 rgba(255,255,255,0.92);
+        0 16px 34px rgba(0,0,0,0.08),
+        0 6px 14px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.94);
 
-      --panel-bg:rgba(255,255,255,0.48);
-      --panel-border:rgba(255,255,255,0.62);
+      --panel-bg:rgba(255,255,255,0.50);
+      --panel-border:rgba(255,255,255,0.72);
       --panel-shadow:
-        0 14px 30px rgba(0,0,0,0.055),
-        inset 0 1px 0 rgba(255,255,255,0.88);
+        0 12px 28px rgba(0,0,0,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.9);
 
-      --feature-bg:rgba(244,244,244,0.64);
-      --feature-border:rgba(255,255,255,0.78);
+      --feature-bg:rgba(242,242,242,0.72);
+      --feature-border:rgba(255,255,255,0.84);
+
+      --pill:#f6e0cf;
+      --pill-strong:#f1d2bb;
 
       --button-bg:#111111;
       --button-text:#ffffff;
-      --button-hover:#272727;
+      --button-hover:#262626;
 
       --ease:cubic-bezier(.22,.7,.1,1);
     }
 
-    *{box-sizing:border-box}
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      font-family: Lato, Arial, sans-serif;
-      color: var(--text);
-      overflow-x: hidden;
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      margin: 0;
+    html, body{
+      margin:0;
+      padding:0;
+      background:#ffffff;
+      color:var(--text);
+      font-family:Lato, Arial, sans-serif;
+      overflow-x:hidden;
+    }
+
+    body{
+      min-height:100vh;
     }
 
     .shell{
@@ -67,21 +73,20 @@
     }
 
     .frame{
-      width:min(1320px,100%);
+      width:min(1320px, 100%);
       display:flex;
       flex-direction:column;
-      gap:22px;
+      gap:20px;
     }
 
     /* HERO */
     .hero{
       position:relative;
-      width:100%;
       min-height:560px;
       border-radius:var(--hero-radius);
       overflow:hidden;
+      border:1px solid var(--hero-border);
       background:#ffffff;
-      border:1px solid rgba(242,242,242,1);
       box-shadow:var(--hero-shadow);
       isolation:isolate;
     }
@@ -90,10 +95,10 @@
       position:absolute;
       inset:0;
       opacity:0;
-      transition:opacity 520ms var(--ease);
-      background-size:180% 180%;
-      animation:powderFlow 14s ease-in-out infinite;
-      will-change:opacity, background-position;
+      transition:opacity 280ms ease;
+      background-size:160% 160%;
+      animation:powderFlow 16s ease-in-out infinite;
+      pointer-events:none;
     }
 
     .hero-surface.active{
@@ -102,122 +107,73 @@
 
     .hero-home{
       background:
-        radial-gradient(circle at 16% 20%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 20%),
-        radial-gradient(circle at 84% 18%, rgba(248,248,248,0.42) 0%, rgba(248,248,248,0) 24%),
-        linear-gradient(135deg, #ffffff 0%, #f7f7f7 48%, #fdfdfd 100%);
-      opacity:1;
+        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0) 22%),
+        radial-gradient(circle at 84% 22%, rgba(247,247,247,0.58) 0%, rgba(247,247,247,0) 28%),
+        linear-gradient(135deg, #ffffff 0%, #f8f8f8 50%, #fdfdfd 100%);
       animation:none;
+      opacity:1;
     }
 
     .hero-learning{
       background:
-        radial-gradient(circle at 18% 22%, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0) 20%),
-        radial-gradient(circle at 82% 18%, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0) 24%),
-        linear-gradient(132deg, #fafafa 0%, #efefef 22%, #e6ddd7 42%, #f2ece7 70%, #fbfbfb 100%);
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,0.48) 0%, rgba(255,255,255,0) 22%),
+        radial-gradient(circle at 84% 20%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 26%),
+        linear-gradient(135deg, #fbfbfb 0%, #efefef 28%, #e6dfda 50%, #f3efec 72%, #fcfcfc 100%);
     }
 
     .hero-resources{
       background:
-        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.58) 0%, rgba(255,255,255,0) 20%),
-        radial-gradient(circle at 84% 24%, rgba(230,238,245,0.30) 0%, rgba(230,238,245,0) 24%),
-        linear-gradient(132deg, #fbfcfd 0%, #edf2f6 22%, #d8e3eb 44%, #edf3f7 72%, #fdfefe 100%);
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.48) 0%, rgba(255,255,255,0) 22%),
+        radial-gradient(circle at 84% 20%, rgba(228,236,242,0.22) 0%, rgba(228,236,242,0) 28%),
+        linear-gradient(135deg, #fbfcfd 0%, #eef3f6 30%, #d9e4eb 52%, #eef3f7 74%, #fdfeff 100%);
     }
 
     .hero-compliance{
       background:
-        radial-gradient(circle at 16% 22%, rgba(255,255,255,0.58) 0%, rgba(255,255,255,0) 20%),
-        radial-gradient(circle at 84% 18%, rgba(239,231,252,0.24) 0%, rgba(239,231,252,0) 24%),
-        linear-gradient(130deg, #fcfbff 0%, #f1ebfb 22%, #e0d3f4 42%, #ebe2f8 68%, #fdfcff 100%);
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0) 22%),
+        radial-gradient(circle at 84% 20%, rgba(235,228,247,0.22) 0%, rgba(235,228,247,0) 28%),
+        linear-gradient(135deg, #fdfcff 0%, #f1edf8 30%, #e2d8f0 52%, #f1ebf9 74%, #fefcff 100%);
     }
 
     .hero-settings{
       background:
-        radial-gradient(circle at 14% 20%, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0) 20%),
-        radial-gradient(circle at 84% 22%, rgba(237,237,237,0.28) 0%, rgba(237,237,237,0) 24%),
-        linear-gradient(132deg, #fbfbfb 0%, #efefef 24%, #dddddd 44%, #f3f3f3 72%, #ffffff 100%);
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0) 22%),
+        radial-gradient(circle at 84% 20%, rgba(236,236,236,0.20) 0%, rgba(236,236,236,0) 28%),
+        linear-gradient(135deg, #fbfbfb 0%, #efefef 30%, #e1e1e1 52%, #f2f2f2 74%, #ffffff 100%);
     }
 
     .hero-gloss{
       position:absolute;
       inset:0;
       pointer-events:none;
-      opacity:0;
-      transition:opacity 350ms ease;
       background:
         linear-gradient(
           120deg,
           rgba(255,255,255,0) 0%,
-          rgba(255,255,255,0.04) 18%,
-          rgba(255,255,255,0.16) 30%,
-          rgba(255,255,255,0.05) 44%,
+          rgba(255,255,255,0.05) 18%,
+          rgba(255,255,255,0.14) 30%,
+          rgba(255,255,255,0.04) 44%,
           rgba(255,255,255,0) 60%
         );
       background-size:220% 220%;
       animation:surfaceSweep 8s linear infinite;
+      opacity:.9;
       mix-blend-mode:screen;
-    }
-
-    .hero.has-colour .hero-gloss{
-      opacity:1;
+      pointer-events:none;
     }
 
     .hero-content{
       position:relative;
-      z-index:3;
+      z-index:2;
       min-height:560px;
-      display:flex;
-      align-items:stretch;
       padding:32px;
-    }
-
-    .text-stage{
-      position:relative;
-      width:100%;
-      min-height:100%;
-    }
-
-    .text-layer{
-      position:absolute;
-      inset:0;
-      opacity:0;
-      transform:translateX(0);
-      transition:
-        opacity 360ms var(--ease),
-        transform 360ms var(--ease);
-      pointer-events:none;
-    }
-
-    .text-layer.active{
-      opacity:1;
-      transform:translateX(0);
-      pointer-events:auto;
-    }
-
-    .text-layer.exit-left{
-      opacity:0;
-      transform:translateX(-24px);
-    }
-
-    .text-layer.exit-right{
-      opacity:0;
-      transform:translateX(24px);
-    }
-
-    .text-layer.enter-left{
-      opacity:0;
-      transform:translateX(-24px);
-    }
-
-    .text-layer.enter-right{
-      opacity:0;
-      transform:translateX(24px);
+      display:flex;
     }
 
     .state-panel{
       width:100%;
-      min-height:100%;
       display:grid;
-      grid-template-columns:minmax(0, 1.45fr) minmax(320px, 0.95fr);
+      grid-template-columns:minmax(0, 1.45fr) minmax(310px, 0.92fr);
       gap:24px;
       align-items:stretch;
     }
@@ -227,60 +183,59 @@
       border-radius:28px;
       border:1px solid var(--panel-border);
       box-shadow:var(--panel-shadow);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
     }
 
     .state-main{
       background:var(--panel-bg);
-      padding:34px 34px 30px;
+      padding:34px 36px 30px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      min-height:100%;
     }
 
     .state-feature{
       background:var(--feature-bg);
-      padding:28px 26px;
+      border:1px solid var(--feature-border);
+      padding:28px 24px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      min-height:100%;
     }
 
     .eyebrow{
       margin:0 0 14px 0;
-      font-size:13px;
-      letter-spacing:0.14em;
+      font-size:12px;
+      line-height:1.2;
+      font-weight:800;
+      letter-spacing:.14em;
       text-transform:uppercase;
-      color:#666666;
-      font-weight:700;
+      color:#676767;
     }
 
     .state-title{
       margin:0;
-      max-width:11ch;
-      font-size:clamp(38px, 5.1vw, 72px);
-      line-height:0.96;
-      letter-spacing:-0.06em;
+      font-size:clamp(40px, 5vw, 72px);
+      line-height:.94;
+      letter-spacing:-.06em;
       font-weight:800;
-      color:#111111;
       text-align:left;
+      max-width:10.5ch;
     }
 
     .state-description{
       margin:18px 0 0 0;
-      max-width:62ch;
+      max-width:64ch;
       font-size:16px;
-      line-height:1.6;
-      color:#4e4e4e;
+      line-height:1.62;
+      color:#4c4c4c;
     }
 
     .bullet-list{
-      margin:22px 0 0 0;
-      padding:0;
       list-style:none;
+      padding:0;
+      margin:24px 0 0 0;
       display:grid;
       gap:12px;
     }
@@ -289,21 +244,21 @@
       display:flex;
       align-items:flex-start;
       gap:12px;
+      color:#333333;
       font-size:15px;
       line-height:1.55;
-      color:#353535;
     }
 
     .bullet-list i{
-      margin-top:3px;
-      font-size:14px;
+      margin-top:4px;
+      font-size:13px;
       color:#111111;
+      flex:0 0 auto;
     }
 
     .cta-row{
-      margin-top:28px;
+      margin-top:30px;
       display:flex;
-      align-items:center;
       gap:12px;
       flex-wrap:wrap;
     }
@@ -312,27 +267,27 @@
     .secondary-cta{
       appearance:none;
       border:0;
-      border-radius:999px;
       text-decoration:none;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
+      border-radius:999px;
       font-family:inherit;
       font-weight:700;
-      cursor:pointer;
       transition:
         transform 160ms ease,
         background 160ms ease,
-        color 160ms ease,
-        box-shadow 160ms ease;
+        box-shadow 160ms ease,
+        color 160ms ease;
+      cursor:pointer;
     }
 
     .primary-cta{
+      min-height:50px;
+      padding:14px 20px;
       background:var(--button-bg);
       color:var(--button-text);
-      padding:14px 20px;
-      min-height:50px;
       box-shadow:0 10px 20px rgba(0,0,0,0.10);
     }
 
@@ -342,49 +297,48 @@
     }
 
     .secondary-cta{
-      background:rgba(255,255,255,0.76);
-      color:#111111;
-      padding:12px 18px;
       min-height:46px;
-      border:1px solid rgba(255,255,255,0.86);
+      padding:12px 18px;
+      background:rgba(255,255,255,0.82);
+      color:#111111;
+      border:1px solid rgba(255,255,255,0.88);
       box-shadow:
-        0 8px 16px rgba(0,0,0,0.05),
+        0 8px 16px rgba(0,0,0,0.04),
         inset 0 1px 0 rgba(255,255,255,0.95);
     }
 
     .secondary-cta:hover{
+      background:rgba(255,255,255,0.94);
       transform:translateY(-1px);
-      background:rgba(255,255,255,0.92);
     }
 
     .feature-label{
-      margin:0 0 16px 0;
+      margin:0 0 14px 0;
       font-size:12px;
       line-height:1.2;
-      letter-spacing:0.14em;
+      font-weight:800;
+      letter-spacing:.14em;
       text-transform:uppercase;
-      color:#666666;
-      font-weight:700;
+      color:#676767;
     }
 
     .feature-title{
       margin:0;
       font-size:clamp(22px, 2.2vw, 32px);
-      line-height:1.05;
-      letter-spacing:-0.04em;
+      line-height:1.06;
+      letter-spacing:-.04em;
       font-weight:800;
-      color:#111111;
     }
 
     .feature-body{
       margin:16px 0 0 0;
       font-size:15px;
-      line-height:1.6;
-      color:#4a4a4a;
+      line-height:1.62;
+      color:#4b4b4b;
     }
 
-    .feature-meta{
-      margin-top:18px;
+    .feature-footer{
+      margin-top:22px;
       padding-top:18px;
       border-top:1px solid rgba(0,0,0,0.06);
     }
@@ -395,8 +349,8 @@
       gap:8px;
       padding:8px 12px;
       border-radius:999px;
-      background:rgba(255,255,255,0.72);
-      border:1px solid rgba(255,255,255,0.82);
+      background:rgba(255,255,255,0.76);
+      border:1px solid rgba(255,255,255,0.90);
       font-size:12px;
       font-weight:700;
       color:#333333;
@@ -405,20 +359,19 @@
     /* MENU */
     .menu-zone{
       width:100%;
-      margin-top:-8px;
+      margin-top:-6px;
     }
 
     .menu-wrap{
       position:relative;
       width:100%;
-      min-height:126px;
       border-radius:var(--menu-radius);
       overflow:hidden;
       border:1px solid var(--glass-border);
       background:
-        linear-gradient(135deg, var(--glass-1) 0%, var(--glass-2) 50%, rgba(244,244,244,0.72) 100%);
-      backdrop-filter:blur(20px);
-      -webkit-backdrop-filter:blur(20px);
+        linear-gradient(135deg, var(--glass-1) 0%, var(--glass-2) 50%, rgba(245,245,245,0.74) 100%);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
       box-shadow:var(--menu-shadow);
       isolation:isolate;
     }
@@ -428,12 +381,14 @@
       position:absolute;
       inset:-35% -15%;
       background:
-        linear-gradient(115deg,
+        linear-gradient(
+          115deg,
           rgba(255,255,255,0) 0%,
           rgba(255,255,255,0.08) 18%,
-          rgba(255,255,255,0.22) 28%,
-          rgba(255,255,255,0.05) 40%,
-          rgba(255,255,255,0) 54%);
+          rgba(255,255,255,0.20) 28%,
+          rgba(255,255,255,0.04) 40%,
+          rgba(255,255,255,0) 54%
+        );
       transform:translateX(-56%);
       animation:glassSweep 10s ease-in-out infinite;
       pointer-events:none;
@@ -444,17 +399,16 @@
       position:relative;
       z-index:2;
       width:100%;
-      min-height:126px;
       display:grid;
-      grid-template-columns:68px 1fr 68px;
-      align-items:center;
+      grid-template-columns:62px 1fr 62px;
       gap:12px;
-      padding:16px;
+      align-items:center;
+      padding:14px;
     }
 
     .icon-btn{
-      width:58px;
-      height:58px;
+      width:52px;
+      height:52px;
       border-radius:999px;
       appearance:none;
       border:0;
@@ -462,13 +416,12 @@
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      transition:
-        background 180ms ease,
-        box-shadow 180ms ease,
-        transform 180ms ease,
-        opacity 180ms ease;
+      font-size:18px;
       color:#111111;
-      font-size:19px;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
       flex:0 0 auto;
     }
 
@@ -480,25 +433,25 @@
       background:rgba(255,255,255,0.96);
       border:1px solid rgba(255,255,255,0.96);
       box-shadow:
-        0 8px 18px rgba(0,0,0,0.05),
+        0 8px 16px rgba(0,0,0,0.05),
         inset 0 1px 0 rgba(255,255,255,1);
     }
 
     .settings-btn{
-      background:rgba(255,255,255,0.56);
-      border:1px solid rgba(255,255,255,0.72);
+      background:rgba(255,255,255,0.60);
+      border:1px solid rgba(255,255,255,0.76);
       box-shadow:
-        0 8px 18px rgba(0,0,0,0.04),
-        inset 0 1px 0 rgba(255,255,255,0.90);
+        0 8px 16px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.92);
     }
 
     .menu-items{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
       min-width:0;
-      flex-wrap:nowrap;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
     }
 
     .menu-item{
@@ -506,22 +459,23 @@
       appearance:none;
       border:0;
       background:transparent;
-      color:#151515;
-      padding:15px 24px;
+      color:#171717;
       border-radius:999px;
+      padding:14px 22px;
       font-family:inherit;
-      font-size:clamp(16px, 1.45vw, 21px);
+      font-size:clamp(15px, 1.35vw, 20px);
       line-height:1;
-      letter-spacing:-0.02em;
-      font-weight:600;
+      letter-spacing:-.02em;
+      font-weight:700;
       white-space:nowrap;
       cursor:pointer;
+      overflow:hidden;
+      isolation:isolate;
       transition:
         background 160ms ease,
         box-shadow 160ms ease,
+        transform 160ms ease,
         color 160ms ease;
-      overflow:hidden;
-      isolation:isolate;
     }
 
     .menu-item span{
@@ -533,173 +487,46 @@
       content:"";
       position:absolute;
       inset:0;
-      opacity:0;
       border-radius:inherit;
-      background:
-        linear-gradient(115deg,
-          rgba(255,255,255,0) 0%,
-          rgba(255,255,255,0.10) 28%,
-          rgba(255,255,255,0.20) 42%,
-          rgba(255,255,255,0.05) 56%,
-          rgba(255,255,255,0) 72%);
-      background-size:200% 200%;
+      opacity:0;
       pointer-events:none;
-      z-index:1;
+      background:
+        linear-gradient(
+          115deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,0.10) 26%,
+          rgba(255,255,255,0.22) 42%,
+          rgba(255,255,255,0.05) 58%,
+          rgba(255,255,255,0) 72%
+        );
+      background-size:200% 200%;
+      transition:opacity 160ms ease;
     }
 
     .menu-item:hover,
-    .menu-item.previewing,
+    .menu-item:focus-visible,
     .menu-item.active{
       background:var(--pill);
       color:#111111;
-      box-shadow:0 7px 16px rgba(0,0,0,0.035);
+      box-shadow:
+        0 7px 16px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.65);
+      transform:translateY(-1px);
+      outline:none;
     }
 
     .menu-item:hover::before,
-    .menu-item.previewing::before,
+    .menu-item:focus-visible::before,
     .menu-item.active::before{
       opacity:1;
-      animation:subtlePillMove 3.4s linear infinite;
+      animation:subtlePillMove 3.2s linear infinite;
     }
 
     .menu-item.active{
-      font-weight:700;
+      background:var(--pill-strong);
     }
 
-    /* MOBILE MENU */
-    .mobile-menu{
-      display:none;
-      position:relative;
-      z-index:2;
-    }
-
-    .mobile-menu-bar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:6px 4px;
-    }
-
-    .mobile-menu-heading{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      min-width:0;
-    }
-
-    .mobile-menu-label{
-      margin:0;
-      font-size:18px;
-      line-height:1.1;
-      font-weight:700;
-      letter-spacing:-0.03em;
-      color:#111111;
-    }
-
-    .mobile-menu-caption{
-      margin:0;
-      font-size:12px;
-      line-height:1.3;
-      color:#7a7a7a;
-      letter-spacing:0.01em;
-    }
-
-    .burger-btn{
-      width:50px;
-      height:50px;
-      background:rgba(255,255,255,0.78);
-      border:1px solid rgba(255,255,255,0.92);
-      box-shadow:
-        0 8px 16px rgba(0,0,0,0.045),
-        inset 0 1px 0 rgba(255,255,255,1);
-      font-size:18px;
-    }
-
-    .mobile-menu-panel{
-      max-height:0;
-      opacity:0;
-      overflow:hidden;
-      transition:
-        max-height 280ms var(--ease),
-        opacity 180ms ease,
-        padding-top 180ms ease;
-      padding-top:0;
-    }
-
-    .mobile-menu.open .mobile-menu-panel{
-      max-height:420px;
-      opacity:1;
-      padding-top:8px;
-    }
-
-    .mobile-menu-list{
-      display:grid;
-      gap:10px;
-      padding:0 4px 4px 4px;
-    }
-
-    .mobile-link{
-      width:100%;
-      appearance:none;
-      border:1px solid rgba(255,255,255,0.78);
-      background:rgba(255,255,255,0.68);
-      color:#111111;
-      border-radius:18px;
-      padding:14px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-family:inherit;
-      font-size:15px;
-      line-height:1;
-      font-weight:600;
-      cursor:pointer;
-      box-shadow:
-        0 8px 18px rgba(0,0,0,0.04),
-        inset 0 1px 0 rgba(255,255,255,0.96);
-      transition:
-        transform 160ms ease,
-        background 160ms ease,
-        box-shadow 160ms ease;
-    }
-
-    .mobile-link:hover{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,0.85);
-    }
-
-    .mobile-link i{
-      font-size:13px;
-      color:#7b7b7b;
-    }
-
-    @keyframes powderFlow{
-      0%{background-position:0% 50%}
-      25%{background-position:28% 35%}
-      50%{background-position:100% 50%}
-      75%{background-position:72% 70%}
-      100%{background-position:0% 50%}
-    }
-
-    @keyframes surfaceSweep{
-      0%{background-position:0% 50%}
-      100%{background-position:220% 50%}
-    }
-
-    @keyframes glassSweep{
-      0%{transform:translateX(-56%)}
-      50%{transform:translateX(18%)}
-      100%{transform:translateX(-56%)}
-    }
-
-    @keyframes subtlePillMove{
-      0%{background-position:0% 50%}
-      100%{background-position:200% 50%}
-    }
-
-    /* Smaller laptop */
+    /* Small laptop */
     @media (max-width: 1200px){
       .shell{
         padding:18px;
@@ -720,43 +547,30 @@
       }
 
       .state-main{
-        padding:28px 28px 26px;
+        padding:28px 28px 24px;
       }
 
       .state-feature{
-        padding:24px 22px;
-      }
-
-      .state-description{
-        font-size:15px;
-      }
-
-      .menu{
-        grid-template-columns:62px 1fr 62px;
-      }
-
-      .icon-btn{
-        width:54px;
-        height:54px;
+        padding:24px 20px;
       }
 
       .menu-item{
-        padding:14px 18px;
+        padding:13px 18px;
       }
     }
 
-    /* Tablet landscape / small laptop */
+    /* Tablet landscape / cramped laptop */
     @media (max-width: 980px){
       .frame{
         gap:18px;
       }
 
       .hero{
-        min-height:640px;
+        min-height:620px;
       }
 
       .hero-content{
-        min-height:640px;
+        min-height:620px;
         padding:22px;
       }
 
@@ -765,41 +579,24 @@
         gap:16px;
       }
 
-      .state-main,
-      .state-feature{
-        min-height:auto;
-      }
-
       .state-title{
         max-width:none;
       }
 
-      .menu-wrap{
-        min-height:auto;
-      }
-
       .menu{
-        min-height:auto;
-        grid-template-columns:58px 1fr 58px;
+        grid-template-columns:54px 1fr 54px;
         align-items:start;
-        padding:14px;
       }
 
       .icon-btn{
-        width:50px;
-        height:50px;
+        width:48px;
+        height:48px;
         font-size:17px;
       }
 
       .menu-items{
-        justify-content:center;
-        flex-wrap:wrap;
         gap:8px;
-      }
-
-      .menu-item{
-        font-size:16px;
-        padding:13px 16px;
+        justify-content:center;
       }
     }
 
@@ -810,24 +607,25 @@
       }
 
       .hero{
-        min-height:680px;
+        min-height:660px;
+        border-radius:28px;
       }
 
       .hero-content{
-        min-height:680px;
+        min-height:660px;
         padding:18px;
       }
 
       .state-main{
-        padding:24px 22px 22px;
+        padding:24px 22px 20px;
       }
 
       .state-feature{
-        padding:22px 20px;
+        padding:22px 18px;
       }
 
       .state-title{
-        font-size:clamp(34px, 7vw, 54px);
+        font-size:clamp(34px, 7vw, 56px);
       }
 
       .state-description{
@@ -846,21 +644,12 @@
       }
 
       .hero{
-        min-height:760px;
-        border-radius:28px;
+        min-height:auto;
       }
 
       .hero-content{
-        min-height:760px;
+        min-height:auto;
         padding:14px;
-      }
-
-      .text-stage{
-        min-height:100%;
-      }
-
-      .state-panel{
-        gap:12px;
       }
 
       .state-main,
@@ -876,14 +665,9 @@
         padding:18px 16px;
       }
 
-      .eyebrow{
-        font-size:11px;
-        letter-spacing:0.12em;
-      }
-
       .state-title{
         font-size:clamp(30px, 9vw, 44px);
-        line-height:0.98;
+        line-height:.98;
       }
 
       .state-description{
@@ -912,26 +696,29 @@
         width:100%;
       }
 
-      .menu.desktop-menu{
-        display:none;
-      }
-
-      .mobile-menu{
-        display:block;
-      }
-
       .menu-wrap{
         border-radius:24px;
-        padding:8px;
-        box-shadow:
-          0 12px 26px rgba(0,0,0,0.08),
-          0 4px 12px rgba(0,0,0,0.04),
-          inset 0 1px 0 rgba(255,255,255,0.9);
       }
 
-      .menu-wrap::before{
-        inset:-55% -35%;
-        opacity:0.8;
+      .menu{
+        grid-template-columns:48px 1fr 48px;
+        gap:8px;
+        padding:10px;
+      }
+
+      .icon-btn{
+        width:44px;
+        height:44px;
+        font-size:16px;
+      }
+
+      .menu-items{
+        gap:6px;
+      }
+
+      .menu-item{
+        padding:12px 14px;
+        font-size:14px;
       }
     }
 
@@ -941,6 +728,30 @@
         transition:none !important;
         scroll-behavior:auto !important;
       }
+    }
+
+    @keyframes powderFlow{
+      0%{background-position:0% 50%}
+      25%{background-position:28% 35%}
+      50%{background-position:100% 50%}
+      75%{background-position:72% 70%}
+      100%{background-position:0% 50%}
+    }
+
+    @keyframes surfaceSweep{
+      0%{background-position:0% 50%}
+      100%{background-position:220% 50%}
+    }
+
+    @keyframes glassSweep{
+      0%{transform:translateX(-56%)}
+      50%{transform:translateX(18%)}
+      100%{transform:translateX(-56%)}
+    }
+
+    @keyframes subtlePillMove{
+      0%{background-position:0% 50%}
+      100%{background-position:200% 50%}
     }
   </style>
 </head>
@@ -957,75 +768,27 @@
         <div class="hero-gloss"></div>
 
         <div class="hero-content">
-          <div class="text-stage">
-            <div class="text-layer active" id="textLayerA"></div>
-            <div class="text-layer" id="textLayerB"></div>
-          </div>
+          <div id="heroPanel" class="state-panel"></div>
         </div>
       </section>
 
       <div class="menu-zone">
         <nav class="menu-wrap" aria-label="Main menu">
-
-          <div class="menu desktop-menu">
+          <div class="menu">
             <button class="icon-btn home-btn" id="homeBtn" type="button" aria-label="Home">
               <i class="fa-solid fa-house"></i>
             </button>
 
             <div class="menu-items" id="menuItems">
-              <button class="menu-item" type="button" data-key="learning" data-index="0"><span>Learning</span></button>
-              <button class="menu-item" type="button" data-key="resources" data-index="1"><span>Resources</span></button>
-              <button class="menu-item" type="button" data-key="compliance" data-index="2"><span>Compliance</span></button>
+              <button class="menu-item" type="button" data-key="learning"><span>Learning</span></button>
+              <button class="menu-item" type="button" data-key="resources"><span>Resources</span></button>
+              <button class="menu-item" type="button" data-key="compliance"><span>Compliance</span></button>
             </div>
 
             <button class="icon-btn settings-btn" id="settingsBtn" type="button" aria-label="Settings">
               <i class="fa-solid fa-gear"></i>
             </button>
           </div>
-
-          <div class="mobile-menu" id="mobileMenu">
-            <div class="mobile-menu-bar">
-              <div class="mobile-menu-heading">
-                <p class="mobile-menu-label">Menu</p>
-                <p class="mobile-menu-caption">Open shortcuts and links</p>
-              </div>
-
-              <button
-                class="icon-btn burger-btn"
-                id="burgerBtn"
-                type="button"
-                aria-label="Open menu"
-                aria-expanded="false"
-                aria-controls="mobileMenuPanel">
-                <i class="fa-solid fa-bars"></i>
-              </button>
-            </div>
-
-            <div class="mobile-menu-panel" id="mobileMenuPanel">
-              <div class="mobile-menu-list">
-                <button class="mobile-link" type="button" data-key="learning">
-                  <span>Learning</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </button>
-
-                <button class="mobile-link" type="button" data-key="resources">
-                  <span>Resources</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </button>
-
-                <button class="mobile-link" type="button" data-key="compliance">
-                  <span>Compliance</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </button>
-
-                <button class="mobile-link" type="button" data-key="settings">
-                  <span>Settings</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
         </nav>
       </div>
 
@@ -1034,22 +797,14 @@
 
   <script>
     const hero = document.getElementById('hero');
-    const menuItemsWrap = document.getElementById('menuItems');
+    const heroPanel = document.getElementById('heroPanel');
+    const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
+
     const menuButtons = Array.from(document.querySelectorAll('.menu-item'));
     const homeBtn = document.getElementById('homeBtn');
     const settingsBtn = document.getElementById('settingsBtn');
-    const surfaces = Array.from(document.querySelectorAll('.hero-surface'));
-
-    const layerA = document.getElementById('textLayerA');
-    const layerB = document.getElementById('textLayerB');
-
-    const mobileMenu = document.getElementById('mobileMenu');
-    const burgerBtn = document.getElementById('burgerBtn');
-    const burgerIcon = burgerBtn.querySelector('i');
-    const mobileLinks = Array.from(document.querySelectorAll('.mobile-link'));
 
     const links = {
-      home: null,
       learning: "https://khepri.agca.app/my-activities",
       resources: "https://khepri.agca.app/resource-hub",
       compliance: "https://khepri.agca.app/compliance",
@@ -1058,372 +813,207 @@
 
     const states = {
       home: {
-        index: -1,
-        eyebrow: "Welcome",
         title: "Choose a destination",
-        description: "Select a section from the menu below to open the relevant workspace. The panel will preview each area before you move through.",
+        eyebrow: "Welcome",
+        description: "Select a section from the bottom menu to reveal a richer summary, quick actions and a featured destination. The selected tile remains in place until another section is chosen.",
         bullets: [
-          "Open learning activities, assigned content and progress tracking.",
-          "Browse resources, guides and supporting material in one place.",
-          "Jump into compliance workflows, actions and oversight tasks."
+          "Use the bottom menu to switch between Learning, Resources, Compliance and Settings.",
+          "Each tile surfaces a summary, key points and a direct action button.",
+          "Navigation opens from the tile itself rather than immediately from the menu."
         ],
         ctaLabel: "Go to Learning",
-        ctaTarget: links.learning,
-        featureLabel: "Featured",
+        ctaUrl: links.learning,
+        featureLabel: "Featured item",
         featureTitle: "Quick start",
-        featureBody: "Use the Learning section if you want a sensible default landing point for day-to-day use, assigned activity and general platform re-entry.",
+        featureBody: "If you want a sensible default route into the platform, Learning is the best starting point for day-to-day usage and assigned activity.",
         featureLinkLabel: "Open Learning",
-        featureLink: links.learning
+        featureLinkUrl: links.learning
       },
       learning: {
-        index: 0,
+        title: "Learning",
         eyebrow: "Learning",
-        title: "Learning and development",
-        description: "Access assigned activities, complete outstanding modules and keep training momentum moving. Everything needed for routine learning sits here in one place.",
+        description: "Access training activity, keep track of assigned modules and move through learning tasks from a cleaner single entry point.",
         bullets: [
-          "View current training activity and pending tasks.",
-          "Track completion status and revisit recent items.",
-          "Keep learning workflows centralised and easy to access."
+          "Review current training activity and anything still outstanding.",
+          "Return to recent modules and monitor completion status.",
+          "Keep core learning actions accessible without digging."
         ],
         ctaLabel: "Go to Learning",
-        ctaTarget: links.learning,
+        ctaUrl: links.learning,
         featureLabel: "Featured item",
         featureTitle: "Current activity queue",
-        featureBody: "Open your activity area to review what is due, what is in progress and where attention is required next.",
+        featureBody: "Open your activity area to review what is due, what is underway and which items need attention next.",
         featureLinkLabel: "Open activity queue",
-        featureLink: links.learning
+        featureLinkUrl: links.learning
       },
       resources: {
-        index: 1,
+        title: "Resources",
         eyebrow: "Resources",
-        title: "Resources and reference material",
-        description: "Use the resource area to access practical documents, mapped supporting content and core reference material for routine operational use.",
+        description: "Use the resource area to access documents, guidance and supporting reference material through a more direct and readable entry tile.",
         bullets: [
-          "Browse structured guidance and supporting documents.",
-          "Surface reference items without digging through folders.",
-          "Keep useful operational material within immediate reach."
+          "Browse structured guidance and practical support material.",
+          "Bring repeat-use reference items closer to hand.",
+          "Reduce time spent searching through folders or links."
         ],
         ctaLabel: "Go to Resources",
-        ctaTarget: links.resources,
+        ctaUrl: links.resources,
         featureLabel: "Featured item",
         featureTitle: "Resource hub",
-        featureBody: "The hub consolidates core reference content and makes repeat-use material easier to locate, revisit and share where needed.",
+        featureBody: "The resource hub consolidates useful reference content so routine material is easier to locate and revisit.",
         featureLinkLabel: "Open resource hub",
-        featureLink: links.resources
+        featureLinkUrl: links.resources
       },
       compliance: {
-        index: 2,
+        title: "Compliance",
         eyebrow: "Compliance",
-        title: "Compliance and oversight",
-        description: "Move directly into compliance content, review open actions and access oversight material through a cleaner, more focused entry point.",
+        description: "Move directly into compliance content, oversight material and active operational actions through a more purposeful landing tile.",
         bullets: [
           "Open compliance workflows and key operational actions.",
-          "Surface relevant oversight content without unnecessary clicks.",
-          "Keep monitoring and governance work easier to reach."
+          "Surface oversight material without unnecessary clicks.",
+          "Keep governance-related tasks easier to reach."
         ],
         ctaLabel: "Go to Compliance",
-        ctaTarget: links.compliance,
+        ctaUrl: links.compliance,
         featureLabel: "Featured item",
         featureTitle: "Priority compliance actions",
-        featureBody: "Jump into the compliance area to review current items, navigate active tasks and move into the relevant workstream quickly.",
+        featureBody: "Jump into the compliance area to review current items, navigate active tasks and move into the right workstream quickly.",
         featureLinkLabel: "Open compliance",
-        featureLink: links.compliance
+        featureLinkUrl: links.compliance
       },
       settings: {
-        index: 3,
+        title: "Settings",
         eyebrow: "Settings",
-        title: "Profile and preferences",
-        description: "Manage personal settings, review profile details and make updates to your account environment from a dedicated settings view.",
+        description: "Manage profile and account-level preferences from a dedicated tile that gives users a clear route into personal settings.",
         bullets: [
-          "Review your profile and account information.",
-          "Access preference and user-level platform settings.",
-          "Keep personal platform details maintained and current."
+          "Review account and profile details.",
+          "Update user-level settings and platform preferences.",
+          "Keep personal configuration neat and current."
         ],
         ctaLabel: "Go to Settings",
-        ctaTarget: links.settings,
+        ctaUrl: links.settings,
         featureLabel: "Featured item",
         featureTitle: "Profile controls",
-        featureBody: "Use the profile area to update personal details, review accessible settings and keep your account aligned with current requirements.",
+        featureBody: "Use the profile area to update personal details and review the settings currently available to your account.",
         featureLinkLabel: "Open profile",
-        featureLink: links.settings
+        featureLinkUrl: links.settings
       }
     };
+
+    let activeKey = 'home';
 
     function openInNewTab(url){
       if (!url) return;
       window.open(url, '_blank', 'noopener,noreferrer');
     }
 
-    function renderState(key){
-      const state = states[key];
-
-      const bulletsHtml = state.bullets.map(item => `
+    function renderBullets(items){
+      return items.map(item => `
         <li>
           <i class="fa-solid fa-check"></i>
           <span>${item}</span>
         </li>
       `).join('');
+    }
 
-      return `
-        <div class="state-panel">
-          <div class="state-main">
-            <div>
-              <p class="eyebrow">${state.eyebrow}</p>
-              <h1 class="state-title">${state.title}</h1>
-              <p class="state-description">${state.description}</p>
+    function renderState(key){
+      const state = states[key];
 
-              <ul class="bullet-list">
-                ${bulletsHtml}
-              </ul>
+      heroPanel.innerHTML = `
+        <div class="state-main">
+          <div>
+            <p class="eyebrow">${state.eyebrow}</p>
+            <h1 class="state-title">${state.title}</h1>
+            <p class="state-description">${state.description}</p>
+
+            <ul class="bullet-list">
+              ${renderBullets(state.bullets)}
+            </ul>
+          </div>
+
+          <div class="cta-row">
+            <a class="primary-cta" href="${state.ctaUrl || '#'}" data-open-link="${state.ctaUrl || ''a-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <aside class="state-feature">
+          <div>
+            <p class="feature-label">${state.featureLabel}</p>
+            <h2 class="feature-title">${state.featureTitle}</h2>
+            <p class="feature-body">${state.featureBody}</p>
+          </div>
+
+          <div class="feature-footer">
+            <div class="feature-chip">
+              <i class="fa-solid fa-sparkles"></i>
+              <span>Featured shortcut</span>
             </div>
 
             <div class="cta-row">
-              ${state.ctaTarget || 
-                <span>${state.ctaLabel}</span>
-                <i class="fa-solid fa-arrow-right"></i>
+              <a class="secondary-cta" href="${state.featureLinkUrl || '#'}" data-open-link="${state.featureLinkUrl || ''"fa-solid fa-arrow-up-right-from-square"></i>
               </a>
             </div>
           </div>
-
-          <aside class="state-feature">
-            <div>
-              <p class="feature-label">${state.featureLabel}</p>
-              <h2 class="feature-title">${state.featureTitle}</h2>
-              <p class="feature-body">${state.featureBody}</p>
-            </div>
-
-            <div class="feature-meta">
-              <div class="feature-chip">
-                <i class="fa-solid fa-sparkles"></i>
-                <span>Recommended shortcut</span>
-              </div>
-
-              <div class="cta-row">
-                ${state.featureLink || 
-                  <span>${state.featureLinkLabel}</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-              </div>
-            </div>
-          </aside>
-        </div>
+        </aside>
       `;
-    }
 
-    let activeKey = 'home';
-    let previewKey = null;
-    let visibleLayer = layerA;
-    let hiddenLayer = layerB;
-    let currentIndex = -1;
-
-    function swapLayers(){
-      const temp = visibleLayer;
-      visibleLayer = hiddenLayer;
-      hiddenLayer = temp;
+      heroPanel.querySelectorAll('[data-open-link]').forEach(linkEl => {
+        linkEl.addEventListener('click', (event) => {
+          event.preventDefault();
+          const url = linkEl.getAttribute('data-open-link');
+          openInNewTab(url);
+        });
+      });
     }
 
     function setSurface(key){
       surfaces.forEach(surface => {
-        surface.classList.toggle('active', surface.dataset.surface === key);
+        const isMatch = surface.dataset.surface === key;
+        surface.classList.toggle('active', isMatch);
       });
-
-      if(key === 'home'){
-        hero.classList.remove('has-colour');
-      } else {
-        hero.classList.add('has-colour');
-      }
 
       hero.setAttribute('data-state', key);
     }
 
-    function transitionText(key, direction){
-      const content = renderState(key);
-
-      hiddenLayer.innerHTML = content;
-      hiddenLayer.className = 'text-layer';
-
-      if(direction === 'right'){
-        visibleLayer.classList.remove('active');
-        visibleLayer.classList.add('exit-left');
-        hiddenLayer.classList.add('enter-right');
-      } else if(direction === 'left'){
-        visibleLayer.classList.remove('active');
-        visibleLayer.classList.add('exit-right');
-        hiddenLayer.classList.add('enter-left');
-      } else {
-        visibleLayer.classList.remove('active');
-      }
-
-      requestAnimationFrame(() => {
-        hiddenLayer.classList.add('active');
-        hiddenLayer.classList.remove('enter-left', 'enter-right');
+    function updateMenuState(key){
+      menuButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.key === key);
       });
 
-      setTimeout(() => {
-        visibleLayer.className = 'text-layer';
-        swapLayers();
-      }, 370);
+      settingsBtn.classList.toggle('active', key === 'settings');
+      homeBtn.classList.toggle('active', key === 'home');
     }
 
-    function getDirection(fromIndex, toIndex){
-      if(toIndex > fromIndex) return 'right';
-      if(toIndex < fromIndex) return 'left';
-      return 'none';
-    }
-
-    function clearButtonStates(){
-      menuButtons.forEach(btn => btn.classList.remove('active', 'previewing'));
-    }
-
-    function setHero(key){
-      const nextIndex = states[key].index;
-      const direction = getDirection(currentIndex, nextIndex);
-      setSurface(key);
-      transitionText(key, direction);
-      currentIndex = nextIndex;
-    }
-
-    function setActive(key){
+    function setState(key){
       activeKey = key;
-      previewKey = null;
-
-      clearButtonStates();
-
-      if(key === 'home'){
-        setHero('home');
-        return;
-      }
-
-      const btn = menuButtons.find(b => b.dataset.key === key);
-      if(btn) btn.classList.add('active');
-
-      setHero(key);
+      setSurface(key);
+      renderState(key);
+      updateMenuState(key);
     }
 
-    function setPreview(key){
-      previewKey = key;
-
-      clearButtonStates();
-
-      if(activeKey !== 'home'){
-        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
-        if(activeBtn && activeBtn.dataset.key !== key){
-          activeBtn.classList.add('active');
-        }
-      }
-
-      const previewBtn = menuButtons.find(b => b.dataset.key === key);
-      if(previewBtn) previewBtn.classList.add('previewing');
-
-      setHero(key);
-    }
-
-    function clearPreview(){
-      if(previewKey === null) return;
-      previewKey = null;
-
-      clearButtonStates();
-
-      if(activeKey !== 'home'){
-        const activeBtn = menuButtons.find(b => b.dataset.key === activeKey);
-        if(activeBtn) activeBtn.classList.add('active');
-      }
-
-      setHero(activeKey);
-    }
-
-    function closeMobileMenu(){
-      mobileMenu.classList.remove('open');
-      burgerBtn.setAttribute('aria-expanded', 'false');
-      burgerBtn.setAttribute('aria-label', 'Open menu');
-      burgerIcon.className = 'fa-solid fa-bars';
-    }
-
-    function toggleMobileMenu(){
-      const isOpen = mobileMenu.classList.toggle('open');
-      burgerBtn.setAttribute('aria-expanded', String(isOpen));
-      burgerBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-      burgerIcon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
-    }
-
+    /* Core behaviour:
+       - Hovering a menu item changes the tile
+       - That tile stays there
+       - No mouseleave reset
+       - Clicking does the same
+    */
     menuButtons.forEach(btn => {
       const key = btn.dataset.key;
 
-      btn.addEventListener('mouseenter', () => setPreview(key));
-      btn.addEventListener('focus', () => setPreview(key));
-      btn.addEventListener('click', () => {
-        setActive(key);
-        openInNewTab(links[key]);
-      });
+      btn.addEventListener('mouseenter', () => setState(key));
+      btn.addEventListener('focus', () => setState(key));
+      btn.addEventListener('click', () => setState(key));
     });
 
-    menuItemsWrap.addEventListener('mouseleave', clearPreview);
-    menuItemsWrap.addEventListener('focusout', (e) => {
-      if (!menuItemsWrap.contains(e.relatedTarget)) {
-        clearPreview();
-      }
-    });
+    settingsBtn.addEventListener('mouseenter', () => setState('settings'));
+    settingsBtn.addEventListener('focus', () => setState('settings'));
+    settingsBtn.addEventListener('click', () => setState('settings'));
 
-    homeBtn.addEventListener('mouseenter', () => setHero('home'));
-    homeBtn.addEventListener('mouseleave', () => {
-      if(previewKey !== null){
-        setHero(previewKey);
-      } else {
-        setHero(activeKey);
-      }
-    });
-    homeBtn.addEventListener('click', () => {
-      setActive('home');
-    });
+    homeBtn.addEventListener('mouseenter', () => setState('home'));
+    homeBtn.addEventListener('focus', () => setState('home'));
+    homeBtn.addEventListener('click', () => setState('home'));
 
-    settingsBtn.addEventListener('mouseenter', () => setHero('settings'));
-    settingsBtn.addEventListener('mouseleave', () => {
-      if(previewKey !== null){
-        setHero(previewKey);
-      } else {
-        setHero(activeKey);
-      }
-    });
-    settingsBtn.addEventListener('focus', () => setHero('settings'));
-    settingsBtn.addEventListener('blur', () => {
-      if(previewKey !== null){
-        setHero(previewKey);
-      } else {
-        setHero(activeKey);
-      }
-    });
-    settingsBtn.addEventListener('click', () => {
-      setActive('settings');
-      openInNewTab(links.settings);
-    });
-
-    burgerBtn.addEventListener('click', toggleMobileMenu);
-
-    mobileLinks.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const key = btn.dataset.key;
-        closeMobileMenu();
-        openInNewTab(links[key]);
-      });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth > 700) return;
-      if (!mobileMenu.contains(e.target)) {
-        closeMobileMenu();
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 700) {
-        closeMobileMenu();
-      }
-    });
-
-    layerA.innerHTML = renderState('home');
-    layerA.className = 'text-layer active';
-    layerB.className = 'text-layer';
-    setSurface('home');
+    setState('home');
   </script>
 </body>
 </html>
