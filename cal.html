@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Training Calendar</title>
+
+  <style>
+    :root {
+      --border: #e6e6e6;
+      --text: #111111;
+      --muted: #666666;
+      --green: #d8f5d8;
+      --red: #ffd8d8;
+      --tooltip-bg: #111111;
+      --tooltip-text: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+    }
+
+    /* OUTER FRAME */
+    .widget {
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      padding: 10px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #ffffff;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .nav {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+      color: #222222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .nav:hover {
+      background: #f5f5f5;
+    }
+
+    .title {
+      text-align: center;
+      min-width: 0;
+    }
+
+    .title h2 {
+      margin: 0;
+      font-size: clamp(20px, 2.6vw, 30px);
+      line-height: 1.1;
+      font-weight: 700;
+      color: #111111;
+    }
+
+    .title p {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* WEEKDAYS */
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+      flex: 0 0 auto;
+    }
+
+    .weekday {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 4px 0;
+      white-space: nowrap;
+    }
+
+    /* GRID */
+    .grid-wrap {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .grid {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-rows: repeat(6, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .cell {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #ffffff;
+      min-width: 0;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .cell.empty {
+      border: none;
+      background: transparent;
+    }
+
+    .cell-inner {
+      position: absolute;
+      inset: 0;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .num {
+      font-size: 13px;
+      font-weight: 600;
+      color: #222222;
+      position: relative;
+      z-index: 2;
+    }
+
+    .circle {
+      margin: auto;
+      width: 60%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      position: relative;
+      cursor: default;
+    }
+
+    .green {
+      background: var(--green);
+    }
+
+    .red {
+      background: var(--red);
+    }
+
+    .today {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 6px;
+      height: 6px;
+      background: #111111;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    /* CUSTOM TOOLTIP */
+    .tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 10px);
+      transform: translateX(-50%) translateY(4px);
+      background: var(--tooltip-bg);
+      color: var(--tooltip-text);
+      font-size: 12px;
+      line-height: 1.2;
+      padding: 7px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 9999;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    }
+
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: var(--tooltip-bg) transparent transparent transparent;
+    }
+
+    .circle:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* SMALLER SIZES */
+    @media (max-width: 700px) {
+      .card {
+        padding: 10px;
+      }
+
+      .header {
+        grid-template-columns: 36px 1fr 36px;
+        margin-bottom: 8px;
+      }
+
+      .nav {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+      }
+
+      .weekdays,
+      .grid {
+        gap: 4px;
+      }
+
+      .weekday {
+        font-size: 10px;
+      }
+
+      .num {
+        font-size: 12px;
+      }
+
+      .tooltip {
+        font-size: 11px;
+        padding: 6px 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .title p {
+        font-size: 11px;
+      }
+
+      .weekday {
+        font-size: 9px;
+      }
+
+      .circle {
+        width: 52%;
+      }
+
+      .tooltip {
+        white-space: normal;
+        width: max-content;
+        max-width: 120px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="widget">
+    <div class="card">
+
+      <div class="header">
+        <button class="nav" id="prev" aria-label="Previous month">‹</button>
+
+        <div class="title">
+          <h2 id="month"></h2>
+          <p>Training deadlines</p>
+        </div>
+
+        <button class="nav" id="next" aria-label="Next month">›</button>
+      </div>
+
+      <div class="weekdays" id="days"></div>
+
+      <div class="grid-wrap">
+        <div class="grid" id="grid"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const TRAININGS = [
+      "AML Refresher",
+      "GDPR",
+      "Conflicts of Interest",
+      "Sanctions - Assigned",
+      "Data Protection",
+      "Cyber Security",
+      "Market Abuse",
+      "Conduct Rules",
+      "Financial Crime",
+      "KYC",
+      "Record Keeping",
+      "Complaints Handling",
+      "Information Security",
+      "Whistleblowing"
+    ];
+
+    const WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    const monthEl = document.getElementById("month");
+    const grid = document.getElementById("grid");
+    const days = document.getElementById("days");
+
+    let date = new Date();
+
+    function daysInMonth(y, m) {
+      return new Date(y, m + 1, 0).getDate();
+    }
+
+    function formatMonth(d) {
+      return new Intl.DateTimeFormat("en-GB", {
+        month: "long",
+        year: "numeric"
+      }).format(d);
+    }
+
+    function rand(seed) {
+      const x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
+    }
+
+    function buildEvents(y, m) {
+      const total = daysInMonth(y, m);
+      const events = {};
+
+      for (let d = 1; d <= total; d++) {
+        let chance = 0.18;
+
+        if (d <= 3 || d >= total - 2) {
+          chance = 0.4;
+        }
+
+        const weekday = new Date(y, m, d).getDay();
+        if (weekday >= 1 && weekday <= 4) {
+          chance += 0.08;
+        }
+
+        if (rand(y * 1000 + m * 100 + d) < chance) {
+          const trainingIndex = Math.floor(rand(d * 999 + m * 77 + y) * TRAININGS.length);
+          const type = rand(d * 55 + y) < 0.5 ? "green" : "red";
+
+          events[d] = {
+            name: TRAININGS[trainingIndex],
+            type: type
+          };
+        }
+      }
+
+      return events;
+    }
+
+    function render() {
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      const total = daysInMonth(y, m);
+      const start = (new Date(y, m, 1).getDay() + 6) % 7; // Monday first
+      const events = buildEvents(y, m);
+      const today = new Date();
+
+      monthEl.textContent = formatMonth(date);
+      grid.innerHTML = "";
+
+      const cells = [];
+      for (let i = 0; i < start; i++) cells.push(null);
+      for (let d = 1; d <= total; d++) cells.push(d);
+      while (cells.length < 42) cells.push(null);
+
+      cells.forEach(d => {
+        const cell = document.createElement("div");
+
+        if (d === null) {
+          cell.className = "cell empty";
+          grid.appendChild(cell);
+          return;
+        }
+
+        cell.className = "cell";
+
+        const inner = document.createElement("div");
+        inner.className = "cell-inner";
+
+        const n = document.createElement("div");
+        n.className = "num";
+        n.textContent = d;
+        inner.appendChild(n);
+
+        if (events[d]) {
+          const circ = document.createElement("div");
+          circ.className = "circle " + events[d].type;
+
+          const tooltip = document.createElement("div");
+          tooltip.className = "tooltip";
+          tooltip.textContent = events[d].name;
+
+          circ.appendChild(tooltip);
+          inner.appendChild(circ);
+        }
+
+        if (
+          today.getDate() === d &&
+          today.getMonth() === m &&
+          today.getFullYear() === y
+        ) {
+          const t = document.createElement("div");
+          t.className = "today";
+          inner.appendChild(t);
+        }
+
+        cell.appendChild(inner);
+        grid.appendChild(cell);
+      });
+    }
+
+    WEEK.forEach(d => {
+      const el = document.createElement("div");
+      el.className = "weekday";
+      el.textContent = d;
+      days.appendChild(el);
+    });
+
+    document.getElementById("prev").onclick = () => {
+      date = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+      render();
+    };
+
+    document.getElementById("next").onclick = () => {
+      date = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+      render();
+    };
+
+    render();
+  </script>
+</body>
+</html>
